@@ -1,12 +1,16 @@
 // Dependencies
 var express = require( 'express' );
 var router = express.Router();
+var PythonShell = require( 'python-shell' );
 
-/** Array for all messages ( User's and AI's )
-    {
-      text: String,     // Content of the message
-      bot: Boolean      // Whether or not the message was from the AI
-    }
+/** Array for all Messages ( User's and AI's )
+    Each Message is an object that contains the contents of the message, and whether or not the message was from the bot
+    [
+      {
+        text: String,     // Content of the message
+        bot: Boolean      // Whether or not the message was from the AI
+      }
+    ]
 */
 var msgArray = [];
 
