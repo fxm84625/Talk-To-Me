@@ -1,0 +1,43 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#main-container {
+    width: 65%;
+    max-height: 100%;
+}
+
+#msg-container {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.bot-msg, .user-msg {
+    border-radius: 6px;
+    padding: 7px;
+    margin: 2px;
+    width: 65%;
+    /* word-wrap */
+    white-space: pre-wrap;      /* CSS3 */   
+    white-space: -moz-pre-wrap; /* Firefox */    
+    white-space: -pre-wrap;     /* Opera <7 */   
+    white-space: -o-pre-wrap;   /* Opera 7 */    
+    word-wrap: break-word;      /* IE */
+}
+.bot-msg {
+    background-color: #ddd;
+}
+.user-msg {
+    background-color: #0084ff;
+    color: white;
+    float: right;
+}

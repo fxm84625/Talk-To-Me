@@ -1,0 +1,23 @@
+
+<div id="main-container" class="panel panel-info">
+    <div class="panel-heading"> <h3 class="panel-title"> Talk to Me </h3> </div>
+    <div id="msg-container" class="panel-body">
+    {{#if msgArray}}
+    {{#each msgArray}}
+        {{#if msgArray.bot}}
+        <div class="bot-msg">{{this.text}}</div>
+        {{else}}
+        <div class="user-msg">{{this.text}}</div>
+        {{/if}}
+    {{/each}}
+    {{/if}}
+    </div>
+    <div class="panel-footer">
+        <form method="POST" class="input-group">
+            <input id="text-field" type="text" name="msg" class="form-control" />
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span></button>
+            </span>
+        </form>
+    </div>
+</div>
