@@ -15,7 +15,10 @@ $( document ).ready( function() {
     });
     
     socket.on( 'renderMessage', function( data ) {
-        if( data.bot ) $( '#msg-container' ).append( '<div class="bot-msg">' + data.text + '</div>' );
-        else $( '#msg-container' ).append( '<div class="user-msg">' + data.text + '</div>' );
+        if( data.bot ) $( '#msg-container' ).append( '<div class="bot-msg"></div>' );
+        else $( '#msg-container' ).append( '<div class="user-msg"></div>' );
+        $( '#msg-container div:last-child' ).text( data.text );
+        // Scroll the message container element to the bottom, so users see the most recent messages
+        $( '#msg-container' ).scrollTop( $( '#msg-container' )[0].scrollHeight );
     });
 });

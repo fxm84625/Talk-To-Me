@@ -26,6 +26,7 @@ body {
     padding: 7px;
     margin: 2px;
     width: 65%;
+    display: inline-block;
     /* word-wrap */
     white-space: pre-wrap;      /* CSS3 */   
     white-space: -moz-pre-wrap; /* Firefox */    
