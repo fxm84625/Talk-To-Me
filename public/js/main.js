@@ -8,19 +8,28 @@ $( document ).ready( function() {
     var url = $( location ).attr( 'host' );
     var socket = io.connect( url );
     
-    // Start event listener for Speech Recognition
+    // onAnythingSaid runs every time the User says something
+    // Mark the User as currently active, so the Empathy bot does not interrupt them
     function onAnythingSaid( text ) {
         console.log( "onAnythingSaid:\n" + text );
+        socket.emit( 'active' );
     }
+    // onFinalised runs when the User stops talking
     function onFinalised( text ) {
         socket.emit( 'message', text );
     }
-    function onFinishedListening() {
-        
-    }
+    // onFinishedListening runs when the Speech Recognition closes - unused
+    function onFinishedListening() {}
+    // Start event listener for Speech Recognition
     var listener = new SpeechToText( onAnythingSaid, onFinalised, onFinishedListening );
     listener.startListening();
     
+    // Event: User is typing a message - mark the User as currently active, so the Empathy bot does not interrupt them
+    $( '#msg-field' ).on( 'keydown', function() {
+        socket.emit( 'active' );
+    });
+    
+    // Event: User submits a typed message
     $( '#msg-submit' ).on( 'click', function( event ) {
         event.preventDefault();
         socket.emit( 'message', $( '#msg-field' ).val() );
