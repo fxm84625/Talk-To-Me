@@ -24,21 +24,27 @@ var botMsgTimer = {};
 
 function socketEvents( io, currentUrl ) {
     io.on( 'connection', function( socket ) {
+        // Event: the User sends a message
         socket.on( 'message', function( socketData ) {
             if( !socketData ) return;
             if( !userChats[ socket.id ] ) userChats[ socket.id ] = [];
             // Save the User's message, and render it on their page
             var userMessage = { text: socketData, bot: false };
             userChats[ socket.id ].push( userMessage );
-            io.to( socket.id ).emit( 'renderMessage', userMessage );
+            socket.emit( 'renderMessage', userMessage );
             
             // Get the empathy bot's response, and render it on their page
             pythonAiResponse( socketData, function( error, response ) {
                 if( error ) return console.log( "Error getting Ai resposne:\n" + error );
                 var botMessage = { text: response, bot: true };
                 userChats[ socket.id ].push( botMessage );
-                io.to( socket.id ).emit( 'renderMessage', botMessage );
+                socket.emit( 'renderMessage', botMessage );
             });
+        });
+        // Event: User disconnects, either by refreshing or closing the web page
+        socket.on( 'disconnect', function() {
+            delete userChats[ socket.id ];
+            delete botMsgTimer[ socket.id ];
         });
     });
 }

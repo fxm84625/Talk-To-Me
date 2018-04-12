@@ -8,6 +8,19 @@ $( document ).ready( function() {
     var url = $( location ).attr( 'host' );
     var socket = io.connect( url );
     
+    // Start event listener for Speech Recognition
+    function onAnythingSaid( text ) {
+        console.log( "onAnythingSaid:\n" + text );
+    }
+    function onFinalised( text ) {
+        socket.emit( 'message', text );
+    }
+    function onFinishedListening() {
+        
+    }
+    var listener = new SpeechToText( onAnythingSaid, onFinalised, onFinishedListening );
+    listener.startListening();
+    
     $( '#msg-submit' ).on( 'click', function( event ) {
         event.preventDefault();
         socket.emit( 'message', $( '#msg-field' ).val() );
