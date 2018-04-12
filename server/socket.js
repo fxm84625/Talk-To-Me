@@ -1,4 +1,5 @@
 var pythonAiResponse = require( '../py/python.js' );
+var Sentiment = require( 'sentiment' );
 
 /** Save each user's chat history with the Empathy bot
     The keys of the userChats object are each Socket's Id, and the values are an array of Message
@@ -33,8 +34,20 @@ function socketEvents( io, currentUrl ) {
             userChats[ socket.id ].push( userMessage );
             socket.emit( 'renderMessage', userMessage );
             
-            // Get the empathy bot's response, and render it on their page
-            pythonAiResponse( socketData, function( error, response ) {
+            /** Get sentiment data from the user's message ( numbers indicating whether the message was positive or negative )
+                {
+                  score: Integer - a calculated number,
+                  comparative: Integer
+                  tokens: Array of all words in the sentence,
+                  words: Array of key words,
+                  positive: Array of positive words,
+                  negative: Array of negative words
+                }
+            */
+            var userSentimentObj = Sentiment( socketData );
+            
+            // Get the Empathy bot's response using the sentiment data as an argument, and render it on their page
+            pythonAiResponse( userSentimentObj, function( error, response ) {
                 if( error ) return console.log( "Error getting Ai resposne:\n" + error );
                 var botMessage = { text: response, bot: true };
                 userChats[ socket.id ].push( botMessage );

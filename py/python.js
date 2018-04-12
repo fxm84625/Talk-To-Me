@@ -1,8 +1,8 @@
 var PythonShell = require( 'python-shell' );
 
-function pythonAiResponse( text, callback ) {
+function pythonAiResponse( userSentimentObj, callback ) {
     var options = {
-        args: text
+        args: [ userSentimentObj.tokens.join(' '), userSentimentObj.score, userSentimentObj.comparative ]
     };
     PythonShell.run( '/py/test.py', options, callback );
 }
