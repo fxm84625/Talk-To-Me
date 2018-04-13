@@ -16,10 +16,11 @@ var Sentiment = require( 'sentiment' );
 var userChats = {};
 /** The Empathy bot only responds a short time after the user stops talking
     We do not want to interrupt them while they are talking, or still typing / speaking
-    The keys of the botMsgTimer object are each Socket's Id, and the values are timeout functions, that will run after a period of time ( default: 3 seconds )
+    The keys of the botMsgTimer object are each Socket's Id, and the values are timeout functions, that will run after a period of time ( default: 4 seconds )
 */
 var botMsgTimer = {};
-var defaultBotWaitTime = 5000;
+var defaultBotWaitTime = 4000;
+
 // Function to start a timeout for the Empathy bot's response
 function startBotMsgTimeout( socket ) {
     // Clear an existing timed-out bot response if there is one
@@ -32,7 +33,7 @@ function startBotMsgTimeout( socket ) {
         // Get all User's sentiment data
         var sentimentArray = [];
         // Loop through the messages of the User's chat in reverse order
-        // Don't respond if there are no messages, or if the latest message was a bot message
+        // Don't respond if there are no messages, or if the last message was a bot message
         if( !userChats[ socket.id ] ) return;
         if( userChats[ socket.id ][ userChats[ socket.id ].length - 1 ].bot ) return;
         for( var i = userChats[ socket.id ].length - 1; i >= 0; i-- ) {
@@ -71,6 +72,7 @@ function socketEvents( io, currentUrl ) {
             var userMessage = { text: socketData, bot: false };
             userChats[ socket.id ].push( userMessage );
             socket.emit( 'renderMessage', userMessage );
+            startBotMsgTimeout( socket );
         });
 
         // Event: User is active ( talking or typing ) - make sure that the Empathy bot does not interrupt them

@@ -1,16 +1,16 @@
 class SpeechToText {
-    /*
-    Arguments for the constructor.
+    /**
+      Arguments for the constructor.
 
-    onAnythingSaid - a callback that will be passed interim transcriptions
-    (fairly immediate, less accurate)
+      onAnythingSaid - a callback that will be passed interim transcriptions
+      (fairly immediate, less accurate)
 
-    onFinalised - a callback that will be passed the finalised transcription from the cloud
-    (slow, much more accuate)
+      onFinalised - a callback that will be passed the finalised transcription from the cloud
+      (slow, much more accuate)
 
-    onFinishedListening - a callback that will be called when the speech recognition stops listening
+      onFinishedListening - a callback that will be called when the speech recognition stops listening
 
-    language - the language to interpret against. Default is US English.
+      language - the language to interpret against. Default is US English.
     */
     constructor( onAnythingSaid, onFinalised, onFinishedListening, language = 'en-US' ) {
         // Check to see if this browser supports speech recognition
@@ -46,21 +46,13 @@ class SpeechToText {
                 }
             }
         };
-
-        // this.recognition.onend = () => onFinishedListening();
-        this.recognition.onend = () => this.recognition.start();
-
+        this.recognition.onend = () => onFinishedListening();
+        // this.recognition.onend = () => this.recognition.start();
     }
 
-    stopListening() {
-        this.recognition.stop();
-    }
+    stopListening() { this.recognition.stop(); }
 
-    /*
-    Explicitly start listening.
-    Listening will need to be started again after a finalised result is returned.
-    */
-    startListening() {
-        this.recognition.start();
-    }
+    // Explicitly start listening.
+    // Listening will need to be started again after a finalised result is returned.
+    startListening() { this.recognition.start(); }
 }

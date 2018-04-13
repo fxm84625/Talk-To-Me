@@ -1,27 +1,15 @@
-import sys
+numRecent = 2
+wordsArray = [ 'hi', 'two', 'three', 'four', ':::', '5', '6', '7', ':::', '8', ':::', '9', '10', ':::', '11', '12', ':::' ]
 
-numRecent = sys.argv[1]
-scoreArray = sys.argv[2].split(',')
-comparativeScoreArray = sys.argv[3].split(',')
-tokensArray = sys.argv[4].split(',')
-wordsArray = sys.argv[5].split(',')
-positiveArray = sys.argv[6].split(',')
-negativeArray = sys.argv[7].split(',')
+recentWordsArray = []
+recentCount = 0
+for i in reversed( wordsArray ):
+    if( i == ':::' ):
+        recentCount += 1
+    elif( recentCount <= numRecent ):
+        recentWordsArray.append( i )
+    else:
+        break
 
-sumScore = 0
-for score in scoreArray:
-    sumScore += float( score )
-avgScore = sumScore / len( scoreArray )
-
-sumComparativeScore = 0
-for comparativeScore in comparativeScoreArray:
-    sumComparativeScore += float( comparativeScore )
-avgComparativeScore = sumComparativeScore / len( comparativeScoreArray )
-
-response = ''
-response += 'Total Score: ' + str( sumScore ) + ', '
-response += 'Avg Score: ' + str( avgScore ) + ', '
-response += 'Total Comparative Score: ' + str( sumComparativeScore ) + ', '
-response += 'Avg Comparative Score: ' + str( avgComparativeScore )
-print( response )
-
+recentWordsArray.reverse()
+print( recentWordsArray )

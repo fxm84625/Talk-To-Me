@@ -21,6 +21,24 @@ body {
     overflow-y: auto;
 }
 
+#panel-title {
+    display: flex;
+    justify-content: space-between;
+}
+#panel-title-left {
+    flex: 0.8;
+}
+#panel-title-right {
+    flex: 0.2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#login-button, #register-button {
+    font-size: 14px;
+    cursor: pointer;
+}
+
 .bot-msg, .user-msg {
     border-radius: 6px;
     padding: 7px;
