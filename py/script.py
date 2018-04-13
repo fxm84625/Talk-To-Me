@@ -15,23 +15,17 @@ keyWordsArray = sys.argv[5].split(',')
 positiveArray = sys.argv[6].split(',')
 negativeArray = sys.argv[7].split(',')
 
+# Score Calculations
 sumScore = 0
 for i in range( len( scoreArray ) - numRecent, len( scoreArray ) ):
     sumScore += float( scoreArray[i] )
-avgScore = sumScore / len( scoreArray )
+avgScore = sumScore / numRecent
 
 sumComparativeScore = 0
 for i in range( len( comparativeScoreArray ) - numRecent, len( comparativeScoreArray ) ):
     sumComparativeScore += float( comparativeScoreArray[i] )
-avgComparativeScore = sumComparativeScore / len( comparativeScoreArray )
+avgComparativeScore = sumComparativeScore / numRecent
     
-response = ''
-response += 'Total Score: ' + str( sumScore ) + ', '
-response += 'Avg Score: ' + str( avgScore ) + ', '
-response += 'Total Comparative Score: ' + str( sumComparativeScore ) + ', '
-response += 'Avg Comparative Score: ' + str( avgComparativeScore ) + ', '
-response += 'Recent Words: '
-
 # Get the most recent messages, and not all messages
 recentWordsArray = []
 recentCount = 0
@@ -45,7 +39,15 @@ for i in reversed( wordsArray ):
         break
 recentWordsArray.reverse()
 
+# Generate a response for the User
+response = ''
+response += 'Total Score: ' + str( sumScore ) + ', '
+response += 'Avg Score: ' + str( avgScore ) + ', '
+response += 'Total Comparative Score: ' + str( sumComparativeScore ) + ', '
+response += 'Avg Comparative Score: ' + str( avgComparativeScore ) + ', '
+response += 'Recent Words: '
 for word in recentWordsArray:
     response += word + ' '
 
+# In this Python script, "print"-ing will return whatever is printed to the Javascript server
 print( response )

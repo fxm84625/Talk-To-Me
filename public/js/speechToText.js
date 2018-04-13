@@ -1,3 +1,4 @@
+// npm package: speech-to-text
 class SpeechToText {
     /**
       Arguments for the constructor.
