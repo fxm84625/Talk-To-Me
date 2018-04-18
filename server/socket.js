@@ -95,7 +95,7 @@ function startBotMsgTimeout( socket ) {
         }).then( response => response.json() )
         .then( response => {
             var dialogFlowResult = response.result;
-            var botResponse = getBotResponse( dialogFlowResult );
+            var botResponse = getBotResponse( dialogFlowResult, userStates[ socket.id ] );
             var botMessage = { text: botResponse, bot: true };
             userChats[ socket.id ].push( botMessage );
             socket.emit( 'renderMessage', botMessage );
