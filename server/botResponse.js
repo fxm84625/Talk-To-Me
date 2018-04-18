@@ -19,8 +19,18 @@
         },
         score: 1
     }
+<<<<<<< HEAD
 */
 function botResponse( dialogFlowResult , userStates ) {
+=======
+/** userStates is an array that has emotional state data, in the form of numerical values
+    userStates: [ totalScore, totalComparativeScore ]
+        totalScore: total calculated score from User's words ( each word is scored from -4 to +4 )
+        comparativeScore: total comparative score from each User's sentence. Each sentence's score is the totalScore of that sentence divided by the number of words
+/** prevUserStates is an array that has the previous emotional state data
+*/
+function botResponse( dialogFlowResult, userStates, prevUserStates ) {
+>>>>>>> 86e22d7ad599cb3c0432ef85fb95f3a8cbcd2e29
     // If the User gave a greeting, give the greeting response
     if( dialogFlowResult.action === 'input.welcome' ) return dialogFlowResult.fulfillment.speech;
     var response = '';
