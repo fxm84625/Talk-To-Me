@@ -19,11 +19,6 @@
         },
         score: 1
     }
-/** userStates is an array that has emotional state data, in the form of numerical values
-    userStates: [ totalScore, totalComparativeScore ]
-        totalScore: total calculated score from User's words ( each word is scored from -4 to +4 )
-        comparativeScore: total comparative score from each User's sentence. Each sentence's score is the totalScore of that sentence divided by the number of words
-/** prevUserStates is an array that has the previous emotional state data
 */
 var questionArray = [
     'How are you?',
@@ -36,7 +31,7 @@ var negativeArray = [
     'Oh no, What happened',
     'What\'s wrong',
     'How did this happen',
-    'Is everything, ok?'
+    'Is everything ok'
 ];
 
 var positiveArray = [
@@ -50,35 +45,43 @@ var neutralArray = [
     'That\'s interesting. Do tell.',
     'Keep going!'
 ];
-
+/** userStates is an array that has emotional state data, in the form of numerical values
+    userStates: [ totalScore, totalComparativeScore ]
+        totalScore: total calculated score from User's words ( each word is scored from -4 to +4 )
+        comparativeScore: total comparative score from each User's sentence. Each sentence's score is the totalScore of that sentence divided by the number of words
+/** prevUserStates is an array that has the previous emotional state data
+*/
 function botResponse( dialogFlowResult, userStates, prevUserStates ) {
     // If the User gave a greeting, give the greeting response
+    console.log(prevUserStates, 'this is the previous user state')
+    console.log(userStates, 'this is the current user state')
     if( dialogFlowResult.action === 'input.welcome' ) {
-        return dialogFlowResult.fulfillment.speech + questionArray[Math.floor(Math.random() * questionArray.length)];
+        return dialogFlowResult.fulfillment.speech + ' ' + questionArray[Math.floor(Math.random() * questionArray.length)];
     }
     var response = '';
-    if(prevUserStates > userStates) {
+    if(prevUserStates[1] > userStates[1]) {
         if(dialogFlowResult.action === 'input.unknown') {
             return negativeArray[Math.floor(Math.random() * negativeArray.length)] + '?';
-        } else if(dialogFlow.parameters["given-name"].length) {
-            return negativeArray[Math.floor(Math.random() * negativeArray.length)] + `with ${dialogFlow.parameters["given-name"][0]}?`;
-        } else if(dialogFlow.parameters["geo-city"]) {
-            return negativeArray[Math.floor(Math.random() * negativeArray.length)] + `at ${dialogFlow.parameters["geo-city"][0]}?`;
+        } else if(dialogFlowResult.parameters["given-name"].length) {
+            return negativeArray[Math.floor(Math.random() * negativeArray.length)] + ` with ${dialogFlowResult.parameters["given-name"][0]}?`;
+        } else if(dialogFlowResult.parameters["geo-city"].length) {
+            return negativeArray[Math.floor(Math.random() * negativeArray.length)] + ` at ${dialogFlowResult.parameters["geo-city"][0]}?`;
         } else {
             return negativeArray[Math.floor(Math.random() * negativeArray.length)] + '?';
         }
-    } else if (prevUserStates < userStates) {
+    } else if (prevUserStates[1] < userStates[1]) {
         if(dialogFlowResult.action === 'input.unknown') {
-            return postiveArray[Math.floor(Math.random() * postiveArray.length)] + '?';
-        } else if(dialogFlow.parameters["given-name"].length) {
-            return postiveArray[Math.floor(Math.random() * postiveArray.length)] + `with ${dialogFlow.parameters["given-name"][0]}?`;
-        } else if(dialogFlow.parameters["geo-city"]) {
-            return postiveArray[Math.floor(Math.random() * postiveArray.length)] + `at ${dialogFlow.parameters["geo-city"][0]}?`;
+            return positiveArray[Math.floor(Math.random() * positiveArray.length)] + '?';
+        } else if(dialogFlowResult.parameters["given-name"].length) {
+            return positiveArray[Math.floor(Math.random() * positiveArray.length)] + ` with ${dialogFlowResult.parameters["given-name"][0]}?`;
+        } else if(dialogFlowResult.parameters["geo-city"]) {
+            console.log(dialogFlowResult)
+            return positiveArray[Math.floor(Math.random() * positiveArray.length)] + ` at ${dialogFlowResult.parameters["geo-city"][0]}?`;
         } else {
-            return postiveArray[Math.floor(Math.random() * postiveArray.length)] + '?';
+            return positiveArray[Math.floor(Math.random() * positiveArray.length)] + '?';
         }
     } else {
-        return neurtralArray[Math.floor(Math.random() * neurtralArray.length)];
+        return neutralArray[Math.floor(Math.random() * neutralArray.length)];
     }
     return response;
 }
