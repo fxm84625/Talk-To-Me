@@ -66,7 +66,7 @@ function startBotMsgTimeout( socket ) {
         var userText = '';
         // Read all Sentiment data, and update the User's emotional state using estimated numerical value
         if( !userStates[ socket.id ] ) userStates[ socket.id ] = [ 0, 0 ];
-        var prevUserStates = userStates[ socket.id ];
+        var prevUserStates = userStates[ socket.id ].slice();
         for( var i = 0; i < sentimentArray.length; i++ ) {
             userStates[ socket.id ][0] += sentimentArray[i].score;
             userStates[ socket.id ][1] += sentimentArray[i].comparative;
