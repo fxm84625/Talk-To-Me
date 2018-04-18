@@ -11,7 +11,7 @@ app.set( 'port', port );
 // Create HTTP server.
 // Start Socket.io
 var server = http.createServer( app );
-var io = require( 'socket.io' )( server );
+var io = require( 'socket.io' )( server  );
 var ioEvents = require( '../server/socket.js' );
 ioEvents( io, getUrlFromPort( port ) );
 

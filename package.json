@@ -19,7 +19,9 @@
         "axios": "^0.18.0",
         "body-parser": "^1.18.2",
         "express": "^4.16.3",
+        "express-favicon": "^2.0.0",
         "express-handlebars": "^3.0.0",
+        "node-fetch": "^2.1.2",
         "python-shell": "^0.5.0",
         "sentiment": "^4.2.0",
         "socket.io": "^2.1.0"

@@ -1,22 +1,15 @@
-// npm package: speech-to-text
+// Code take from npm package: speech-to-text, /index.js
 class SpeechToText {
-    /**
-      Arguments for the constructor.
-
-      onAnythingSaid - a callback that will be passed interim transcriptions
-      (fairly immediate, less accurate)
-
-      onFinalised - a callback that will be passed the finalised transcription from the cloud
-      (slow, much more accuate)
-
-      onFinishedListening - a callback that will be called when the speech recognition stops listening
-
-      language - the language to interpret against. Default is US English.
+    /** Arguments for the constructor:
+        onAnythingSaid - a callback that will be passed interim transcriptions ( fairly immediate, less accurate )
+        onFinalised - a callback that will be passed the finalised transcription from the cloud ( slow, much more accuate )
+        onFinishedListening - a callback that will be called when the speech recognition stops listening
+        language - the language to interpret against. Default is US English.
     */
     constructor( onAnythingSaid, onFinalised, onFinishedListening, language = 'en-US' ) {
         // Check to see if this browser supports speech recognition
         if( !('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window) ) {
-            throw new Error("This browser doesn't support speech recognition. Try Google Chrome or Firefox.");
+            console.log( "This browser doesn't support speech recognition ( speech to text ). Try Google Chrome or Firefox." );
         }
 
         const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;

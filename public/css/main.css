@@ -26,10 +26,10 @@ body {
     justify-content: space-between;
 }
 #panel-title-left {
-    flex: 0.8;
+    flex: 0.74;
 }
 #panel-title-right {
-    flex: 0.2;
+    flex: 0.26;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -37,6 +37,9 @@ body {
 #login-button, #register-button {
     font-size: 14px;
     cursor: pointer;
+}
+#voice-toggle, #visual-toggle {
+    
 }
 
 .bot-msg, .user-msg {
