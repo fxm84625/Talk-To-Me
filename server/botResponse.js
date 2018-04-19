@@ -37,7 +37,7 @@ var negativeArray = [
 var positiveArray = [
     'That sounds nice. What happened',
     'Awesome! What happened',
-    ''
+    'Sounds good. Explain?'
 ];
 
 var neutralArray = [
@@ -45,6 +45,15 @@ var neutralArray = [
     'That\'s interesting. Do tell.',
     'Keep going!'
 ];
+
+var breatheArray = [
+    'How about we just breathe for a moment.',
+    'Let\'s just take a moment to breathe.',
+    'Can we just take some time to breathe?',
+    'I think we should just take time to breathe?',
+]
+
+var context = {};
 /** userStates is an array that has emotional state data, in the form of numerical values
     userStates: [ totalScore, totalComparativeScore ]
         totalScore: total calculated score from User's words ( each word is scored from -4 to +4 )
@@ -53,11 +62,13 @@ var neutralArray = [
 */
 function botResponse( dialogFlowResult, userStates, prevUserStates ) {
     // If the User gave a greeting, give the greeting response
-    console.log(prevUserStates, 'this is the previous user state')
-    console.log(userStates, 'this is the current user state')
+    // context.push(dialogFlowResult);
+    // console.log(prevUserStates, 'this is the previous user state')
+    // console.log(userStates, 'this is the current user state')
     if( dialogFlowResult.action === 'input.welcome' ) {
         return dialogFlowResult.fulfillment.speech + ' ' + questionArray[Math.floor(Math.random() * questionArray.length)];
     }
+
     var response = '';
     if(prevUserStates[1] > userStates[1]) {
         if(dialogFlowResult.action === 'input.unknown') {
@@ -70,6 +81,9 @@ function botResponse( dialogFlowResult, userStates, prevUserStates ) {
             return negativeArray[Math.floor(Math.random() * negativeArray.length)] + '?';
         }
     } else if (prevUserStates[1] < userStates[1]) {
+        if(userStates[0] <= -15) {
+            return 'Breathe';
+        }
         if(dialogFlowResult.action === 'input.unknown') {
             return positiveArray[Math.floor(Math.random() * positiveArray.length)] + '?';
         } else if(dialogFlowResult.parameters["given-name"].length) {
