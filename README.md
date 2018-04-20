@@ -36,8 +36,14 @@
 </p>
 <!-- Used Sentiment package-->
 ## Purpose
+
 Talk To Me is a web application that offers a disposable experience of catharsis.
 
-Using Speech to Text and Sentiment npm package to assess the user’s emotional polarity, the Artificial Empathy responses according to their tier of distress.
+Using Speech to Text and Sentiment npm package to assess the user’s emotional polarity, the Artificial Empathy responds according to their tier of distress.
 
-The response offers sympathy and encourages the users to open up. The adaptive user interface mirrors the user’s expression in an abstract form to reflect empathy, using a face tracking.
+The response offers sympathy and encourages the users to open up. The adaptive user interface mirrors the user’s expression in an abstract form to reflect empathy.
+
+The Bot attempts to utilize Natural Language Processing (NLP) and Natural Language Understanding (NLU)
+to converse with the user therapeutically based on psychology research.
+
+## Key Features
