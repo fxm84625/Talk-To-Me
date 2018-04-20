@@ -63,3 +63,5 @@ to converse with the user therapeutically based on psychology research.
 * Music
 
 ## How To Use
+
+Access the bot <a href="aitalktome.herokuapp.com" target="blank">Here</a>!
