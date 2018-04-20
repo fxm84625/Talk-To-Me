@@ -31,8 +31,7 @@
   <a href="#key-features">Key Features</a> •
   <a href="#how-to-use">How To Use</a> •
   <a href="#credits">Credits</a> •
-  <a href="#authors">Authors</a> •
-  <a href="#license">License</a>
+  <a href="#authors">Authors</a>
 </p>
 <!-- Used Sentiment package-->
 
@@ -64,14 +63,43 @@ to converse with the user therapeutically based on psychology research.
 
 ## How To Use
 
-Access the bot <a href="aitalktome.herokuapp.com" target="blank">Here</a>!
+Access the bot <a href="http://aitalktome.herokuapp.com" target="blank">Here</a>!
 
 ## Credits
 
 The Web Application uses code from several open source packages.
 
-    - [APIAI](https://dialogflow.com/)
-    - [Node.js](https://nodejs.org/)
-    - [Sentiment](https://www.npmjs.com/package/sentiment)
-    - [Express](https://www.npmjs.com/package/express)
-    - [socket.io](https://github.com/socketio/socket.io)
+- [APIAI](https://dialogflow.com/)
+- [Node.js](https://nodejs.org/)
+- [Sentiment](https://www.npmjs.com/package/sentiment)
+- [Express](https://www.npmjs.com/package/express)
+- [socket.io](https://github.com/socketio/socket.io)
+
+## Authors
+
+Franky Cen
+
+Contributions
+- Created front and back end chat functionality
+- Created speech to text and text to speech functionality
+- Created Cloud functionality and hosting
+- Bot Empathy Algorithm
+
+Contact
+- [Github](https://github.com/fxm84625)
+- [LinkedIn](https://www.linkedin.com/in/franky-cen/)
+
+Hyesoo Shin
+
+Contributions
+- Research behind bot empathy
+
+James Wang
+
+Contributions
+- Bot Empathy Algorithm
+- Trained Bot through DialogFlow
+
+Contact
+- [Github](https://github.com/thejameswang)
+- [LinkedIn](https://www.linkedin.com/in/thejameswang/)
