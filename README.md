@@ -35,9 +35,10 @@
   <a href="#license">License</a>
 </p>
 <!-- Used Sentiment package-->
+
 ## Purpose
 
-Talk To Me is a web application that offers a disposable experience of catharsis.
+__Talk To Me is a web application that offers a disposable experience of catharsis.__
 
 Using Speech to Text and Sentiment npm package to assess the user’s emotional polarity, the Artificial Empathy responds according to their tier of distress.
 
@@ -47,3 +48,30 @@ The Bot attempts to utilize Natural Language Processing (NLP) and Natural Langua
 to converse with the user therapeutically based on psychology research.
 
 ## Key Features
+* Sentiment - Have emotion? It makes it into numbers
+    - Uses Sentiment package to interpret sentences and their emotional levels
+* DialogFlow
+    - Word production is created from the trained packaged
+* Voice Recognition
+    - Allows users to speak to the bot
+* Text to Speech
+    - Allows users to listen to responses of the bot
+* Visual Display of Bot
+* Calming Techniques
+    - Breathing exercises
+    - Reading exercises
+* Music
+
+## How To Use
+
+Access the bot <a href="aitalktome.herokuapp.com" target="blank">Here</a>!
+
+## Credits
+
+The Web Application uses code from several open source packages.
+
+    - [APIAI](https://dialogflow.com/)
+    - [Node.js](https://nodejs.org/)
+    - [Sentiment](https://www.npmjs.com/package/sentiment)
+    - [Express](https://www.npmjs.com/package/express)
+    - [socket.io](https://github.com/socketio/socket.io)
