@@ -77,7 +77,7 @@ The Web Application uses code from several open source packages.
 
 ## Authors
 
-Franky Cen
+__Franky Cen__
 
 Contributions
 - Created front and back end chat functionality
@@ -89,12 +89,12 @@ Contact
 - [Github](https://github.com/fxm84625)
 - [LinkedIn](https://www.linkedin.com/in/franky-cen/)
 
-Hyesoo Shin
+__Hyesoo Shin__
 
 Contributions
 - Research behind bot empathy
 
-James Wang
+__James Wang__
 
 Contributions
 - Bot Empathy Algorithm
