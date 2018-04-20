@@ -65,3 +65,13 @@ to converse with the user therapeutically based on psychology research.
 ## How To Use
 
 Access the bot <a href="aitalktome.herokuapp.com" target="blank">Here</a>!
+
+## Credits
+
+The Web Application uses code from several open source packages.
+
+    - [APIAI](https://dialogflow.com/)
+    - [Node.js](https://nodejs.org/)
+    - [Sentiment](https://www.npmjs.com/package/sentiment)
+    - [Express](https://www.npmjs.com/package/express)
+    - [socket.io](https://github.com/socketio/socket.io)
