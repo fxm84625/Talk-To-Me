@@ -124,6 +124,7 @@ function startBotMsgTimeout( socket ) {
     }, defaultBotWaitTime ) );
 }
 
+// Server side Socket event handlers. The Client side Socket event handlers are in /public/main.js
 function socketEvents( io, currentUrl ) {
     io.on( 'connection', function( socket ) {
         // Event: the User sends a message
@@ -171,9 +172,14 @@ var breatheResolvedResponse = [
 // Events for the Empathy bot to run
 var breatheEventDelay = 4000;
 function startBreatheEvent( socket ) {
+    // Bot messages starting with ":" character are appended to the previous message
+    // Bot messages that are equal to ":del" removes the previous message
+    // Only messages without a ":" character are spoken through text-to-speech
     clearBotTimeouts( socket.id );
-    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( "Ready?", socket ); }, breatheEventDelay         ) );
-    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":Feel free to stop at any time", socket ); }, breatheEventDelay ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() {
+        sendBotMsg( "Ready?", socket );
+        sendBotMsg( ":Feel free to stop at any time. Please do not strain yourself.", socket );
+    }, breatheEventDelay ) );
     botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( "Inhale", socket ); }, breatheEventDelay +  1500 ) );
     botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":4", socket ); },     breatheEventDelay +  1500 ) );
     botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":3", socket ); },     breatheEventDelay +  2500 ) );
@@ -237,22 +243,16 @@ function startBreatheEvent( socket ) {
     botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":1", socket ); },     breatheEventDelay + 40500 ) );
     botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":del", socket ); },   breatheEventDelay + 41500 ) );
     botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( "Exhale", socket ); }, breatheEventDelay + 41500 ) );
-    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":6", socket ); },     breatheEventDelay + 41500 ) );
-    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":5", socket ); },     breatheEventDelay + 42500 ) );
-    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":4", socket ); },     breatheEventDelay + 43500 ) );
-    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":3", socket ); },     breatheEventDelay + 44500 ) );
-    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":2", socket ); },     breatheEventDelay + 45500 ) );
-    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":1", socket ); },     breatheEventDelay + 46500 ) );
-    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":del", socket ); },   breatheEventDelay + 47500 ) );
-    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( "Hold", socket ); },   breatheEventDelay + 47500 ) );
-    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":2", socket ); },     breatheEventDelay + 47500 ) );
-    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":1", socket ); },     breatheEventDelay + 48500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":4", socket ); },     breatheEventDelay + 41500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":3", socket ); },     breatheEventDelay + 42500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":2", socket ); },     breatheEventDelay + 43500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":1", socket ); },     breatheEventDelay + 44500 ) );
     // End breathing cycle
     botMsgTimer[ socket.id ].push( setTimeout( function() {
         sendBotMsg( ":del", socket );
         sendBotMsg( breatheResolvedResponse[ Math.floor( Math.random() * breatheResolvedResponse.length ) ], socket );
         sendBotMsg( ':You can ask me for this "breathing exercise" again, if you want to.', socket );
-    }, breatheEventDelay + 49500 ) );
+    }, breatheEventDelay + 45500 ) );
 }
 
 module.exports = socketEvents;

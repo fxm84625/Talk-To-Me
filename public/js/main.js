@@ -1,5 +1,6 @@
 $( document ).ready( function() {
-    // Socket connection
+    // Client side Socket connection
+    // Server side Socket event handlers are in /server/socket.js
     var url = $( location ).attr( 'host' );
     var socket = io.connect( url );
 
@@ -20,29 +21,12 @@ $( document ).ready( function() {
     $( '#visual-toggle' ).on( 'change', function() {
         visualToggle = $( this ).prop( 'checked' );
     });
-    
-    /* Unused - User Registration and Login
-    // Login and Register button event handlers - Open the Login or Register Modal
-    $( '#login-button' ).on( 'click', function() {
-        $( '#login-username' ).val( '' );
-        $( '#login-password' ).val( '' );
-        $( '#login-modal' ).modal( 'show' );
-    });
-    $( '#register-button' ).on( 'click', function() {
-        $( '#register-username' ).val( '' );
-        $( '#register-password' ).val( '' );
-        $( '#register-modal' ).modal( 'show' );
-    });
-    // Login and Register submit button event handlers - Login or Register a User
-    $( '#login-submit' ).on( 'click', function() {  });
-    $( '#register-submit' ).on( 'click', function() {  });
-    */
 
     // Functions for reading a User's speech
         // onAnythingSaid runs every time the User says something
         // Mark the User as currently active, so the Empathy bot does not interrupt them
         function onAnythingSaid( text ) {
-            console.log( "onAnythingSaid:\n" + text );
+            console.log( "onAnythingSaid: " + text );
             socket.emit( 'active' );
         }
         // onFinalised runs when the User stops talking
@@ -51,9 +35,9 @@ $( document ).ready( function() {
         }
         // onFinishedListening runs when the Speech Recognition closes - unused
         function onFinishedListening() {}
-        // Start event listener for Speech Recognition
-        var listener = new SpeechToText( onAnythingSaid, onFinalised, onFinishedListening );
-        listener.startListening();
+    // Start event listener for Speech Recognition
+    var listener = new SpeechToText( onAnythingSaid, onFinalised, onFinishedListening );
+    listener.startListening();
 
     // Event: User is typing a message - mark the User as currently active, so the Empathy bot does not interrupt them
     $( '#msg-field' ).on( 'keydown', function() {

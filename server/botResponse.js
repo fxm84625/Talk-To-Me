@@ -31,11 +31,10 @@ var nameNegativeArray = [
 var placePositiveArray = [
     "How did you like ",
     "How was ",
-    "Can you tell me about ",
+    "Can you tell me more about ",
 ];
 var placeNegativeArray = [
-    "How was ",
-    ""
+    "Did you not like ",
 ];
 var breatheArray = [
     'Let\'s breathe for a moment.',
