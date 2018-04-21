@@ -41,7 +41,6 @@ class SpeechToText {
             }
         };
         this.recognition.onend = () => onFinishedListening();
-        // this.recognition.onend = () => this.recognition.start();
     }
 
     stopListening() { this.recognition.stop(); }

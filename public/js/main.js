@@ -1,8 +1,7 @@
 $( document ).ready( function() {
     // Socket connection
     var url = $( location ).attr( 'host' );
-    // var socket = io.connect( url );
-    var socket = io( url, { transports: ['websocket'], upgrade: false } );
+    var socket = io.connect( url );
 
     // Focus on the input element, where user's type their messages
     $( "#text-field" ).focus();
@@ -14,11 +13,11 @@ $( document ).ready( function() {
     var visualToggle = false;
     
     // Handle toggling Empathy bot voice and visual
-    $( '#voice-toggle' ).on( 'click', function() {
+    $( '#voice-toggle' ).on( 'change', function() {
         voiceToggle = $( this ).prop( 'checked' );
         if( !voiceToggle ) window.speechSynthesis.cancel();
     });
-    $( '#visual-toggle' ).on( 'click', function() {
+    $( '#visual-toggle' ).on( 'change', function() {
         visualToggle = $( this ).prop( 'checked' );
     });
     
@@ -71,8 +70,18 @@ $( document ).ready( function() {
     // Event: Server gives a message to the User's Socket, and renders it on their page
     socket.on( 'renderMessage', function( data ) {
         if( data.bot ) {
-            $( '#msg-container' ).append( '<div class="bot-msg">' + data.text + '</div>' );
-            useTextToSpeech( data.text );
+            if( data.text === ':del' ) {
+                $( '#msg-container div:last-child' ).remove();
+            }
+            else if( data.text[0] === ':' ) {
+                // $( '#msg-container' ).append( '<div class="bot-sub-msg">' + data.text.slice(1) + '</div>' );
+                var lastMsgText = $( '#msg-container div:last-child' ).text();
+                $( '#msg-container div:last-child' ).text( lastMsgText + ' ' + data.text.slice(1) );
+            }
+            else {
+                $( '#msg-container' ).append( '<div class="bot-msg">' + data.text + '</div>' );
+                if( voiceToggle ) useTextToSpeech( data.text );
+            }
         }
         else {
             $( '#msg-container' ).append( '<div class="user-msg"></div>' );

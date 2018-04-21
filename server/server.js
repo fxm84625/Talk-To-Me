@@ -3,7 +3,6 @@ var express = require( 'express' );
 var exphbs = require( 'express-handlebars' );
 var path = require( 'path' );
 var bodyParser = require( 'body-parser' );
-var favicon = require( 'express-favicon' );
 
 // Set up handlebar templates
 var app = express();
@@ -15,9 +14,6 @@ app.set( 'view engine', '.hbs' );
 app.use( bodyParser.json() );
 app.use( bodyParser.urlencoded({ extended: true }) );
 app.use( express.static( path.join( __dirname, '../public' ) ) );
-
-// Favicon
-app.use( favicon( __dirname +'/public/favicon.ico' ) );
 
 // Express Routes
 var routes = require( '../routes/routes.js' );

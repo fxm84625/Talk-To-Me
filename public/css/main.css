@@ -42,7 +42,7 @@ body {
     
 }
 
-.bot-msg, .user-msg {
+.user-msg, .bot-msg, .bot-sub-msg {
     border-radius: 6px;
     padding: 7px;
     margin: 2px;
@@ -55,11 +55,15 @@ body {
     white-space: -o-pre-wrap;   /* Opera 7 */    
     word-wrap: break-word;      /* IE */
 }
-.bot-msg {
-    background-color: #eee;
-}
 .user-msg {
     background-color: #0084ff;
     color: white;
     float: right;
+}
+.bot-msg {
+    background-color: #eee;
+}
+.bot-sub-msg {
+    background-color: #eee;
+    width: inherit;
 }

@@ -12,20 +12,26 @@ if( !process.env.API_AI_ACCESS_TOKEN ) { throw new Error( 'process.env.API_AI_AC
     {
       socketId: [
         {
-          text: String,     // Contents of the message
-          bot: Boolean      // Whether or not the message was from a bot
+          text: String,   // Contents of the message
+          bot: Boolean    // Whether or not the message was from a bot
         }
       ]
     }
 */
 var userChats = {};
+function sendBotMsg( text, socket ) {
+    var botMessage = { text: text, bot: true };
+    userChats[ socket.id ].push( botMessage );
+    socket.emit( 'renderMessage', botMessage );
+}
 /** Save each User's emotional state using relative numerical values
     The keys of the userChats object are each Socket's Id, and the values are an array of numbers
     The array will contain "totalScore", and "comparativeScore"
-        totalScore: total calculated score from User's words ( each word is scored from -4 to +4 )
-        comparativeScore: total comparative score from each User's sentence. Each sentence's score is the totalScore of that sentence divided by the number of words
+        totalScore: Integer, total calculated score from User's words ( each word is scored from -4 to +4 )
+        comparativeScore: Integer, total comparative score from each User's sentence. Each sentence's score is the totalScore of that sentence divided by the number of words
+        breatheEvent: String, status for when the Empathy bot activates the breathing exercise: "active", "inactive", "cancelled"
     {
-        socketId: [ totalScore, comparativeScore ]
+        socketId: [ totalScore, comparativeScore, breatheEvent ]
     }
 */
 var userStates = {};
@@ -35,13 +41,20 @@ var userStates = {};
 */
 var botMsgTimer = {};
 var defaultBotWaitTime = 4000;
+function clearBotTimeouts( socketId ) {
+    if( !botMsgTimer[ socketId ] ) return;
+    for( var i = 0; i < botMsgTimer[ socketId ].length; i++ ) {
+        clearTimeout( botMsgTimer[ socketId ][i] );
+    }
+    botMsgTimer[ socketId ] = [];
+}
 
 // Function to start a timeout for the Empathy bot's response
 function startBotMsgTimeout( socket ) {
-    // Clear an existing timed-out bot response if there is one
-    if( botMsgTimer[ socket.id ] ) clearTimeout( botMsgTimer[ socket.id ] );
-    if( !userChats[ socket.id ] ) return;
-    botMsgTimer[ socket.id ] = setTimeout( function() {
+    // Clear existing timed-out bot responses
+    clearBotTimeouts( socket.id );
+    if( !botMsgTimer[ socket.id ] ) botMsgTimer[ socket.id ] = [];
+    botMsgTimer[ socket.id ].push( setTimeout( function() {
         // Get all User's sentiment data for the User's responses since the last time the Empathy bot gave a response
         var sentimentArray = [];
         // Loop through the messages of the User's chat in reverse order
@@ -65,7 +78,7 @@ function startBotMsgTimeout( socket ) {
         sentimentArray = sentimentArray.reverse();
         var userText = '';
         // Read all Sentiment data, and update the User's emotional state using estimated numerical value
-        if( !userStates[ socket.id ] ) userStates[ socket.id ] = [ 0, 0 ];
+        if( !userStates[ socket.id ] ) userStates[ socket.id ] = [ 0, 0, "inactive" ];
         var prevUserStates = userStates[ socket.id ].slice();
         for( var i = 0; i < sentimentArray.length; i++ ) {
             userStates[ socket.id ][0] += sentimentArray[i].score;
@@ -95,14 +108,20 @@ function startBotMsgTimeout( socket ) {
             })
         }).then( response => response.json() )
         .then( response => {
+            // Get text data from DialogFlow, and generate a response for the Empathy bot
             var dialogFlowResult = response.result;
-            var botResponse = getBotResponse( dialogFlowResult, userStates[ socket.id ], prevUserStates );
-            var botMessage = { text: botResponse, bot: true };
-            userChats[ socket.id ].push( botMessage );
-            socket.emit( 'renderMessage', botMessage );
+            if( userStates[2] === "active" ) userStates[2] = "cancelled";
+            var botResponse = getBotResponse( socket.id, dialogFlowResult, userStates[ socket.id ], prevUserStates );
+            sendBotMsg( botResponse, socket );
+            // Check for any events for the Empathy bot to run ( ex. "Let's take a moment to breathe." )
+            var botEvent = getBotMsgEvent( botResponse );
+            if( botEvent === 'breathe' ) {
+                userStates[2] = "active";
+                startBreatheEvent( socket );
+            }
         })
         .catch( error => console.log( "Error getting response from DialogFlow:\n" + error ) );
-    }, defaultBotWaitTime );
+    }, defaultBotWaitTime ) );
 }
 
 function socketEvents( io, currentUrl ) {
@@ -119,18 +138,121 @@ function socketEvents( io, currentUrl ) {
         });
 
         // Event: User is active ( talking or typing ) - make sure that the Empathy bot does not interrupt them
-        socket.on( 'active', function() {
-            startBotMsgTimeout( socket );
-        });
+        socket.on( 'active', function() { startBotMsgTimeout( socket ); });
 
         // Event: User disconnects, either by refreshing or closing the web page
         socket.on( 'disconnect', function() {
-            clearTimeout( botMsgTimer[ socket.id ] );
+            clearBotTimeouts( socket.id );
             delete userChats[ socket.id ];
             delete userStates[ socket.id ];
             delete botMsgTimer[ socket.id ];
         });
     });
+}
+
+// Function to read the Empathy bot's response, and see if there are any specific events
+//      Events: "breathe"
+function getBotMsgEvent( text ) {
+    var splitString = text.split( ' ' );
+    for( var i = 0; i < splitString.length; i++ ) {
+        if( breatheKeyWords.includes( splitString[i] ) ) return 'breathe';
+    }
+    return '';
+}
+var breatheKeyWords = [ 'breath',    'breath.',    'breath,',    'breath?',    'breath?.',
+                        'breathe',   'breathe.',   'breathe,',   'breathe?',   'breathe?.',
+                        'breathing', 'breathing.', 'breathing,', 'breathing?', 'breathing?.' ];
+var breatheResolvedResponse = [
+    "How do you feel now?",
+    "How are you feeling now?",
+    "I hope you are feeling better."
+];
+
+// Events for the Empathy bot to run
+var breatheEventDelay = 4000;
+function startBreatheEvent( socket ) {
+    clearBotTimeouts( socket.id );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( "Ready?", socket ); }, breatheEventDelay         ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":Feel free to stop at any time", socket ); }, breatheEventDelay ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( "Inhale", socket ); }, breatheEventDelay +  1500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":4", socket ); },     breatheEventDelay +  1500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":3", socket ); },     breatheEventDelay +  2500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":2", socket ); },     breatheEventDelay +  3500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":1", socket ); },     breatheEventDelay +  4500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":del", socket ); },   breatheEventDelay +  5500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( "Hold", socket ); },   breatheEventDelay +  5500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":4", socket ); },     breatheEventDelay +  5500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":3", socket ); },     breatheEventDelay +  6500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":2", socket ); },     breatheEventDelay +  7500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":1", socket ); },     breatheEventDelay +  8500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":del", socket ); },   breatheEventDelay +  9500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( "Exhale", socket ); }, breatheEventDelay +  9500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":6", socket ); },     breatheEventDelay +  9500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":5", socket ); },     breatheEventDelay + 10500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":4", socket ); },     breatheEventDelay + 11500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":3", socket ); },     breatheEventDelay + 12500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":2", socket ); },     breatheEventDelay + 13500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":1", socket ); },     breatheEventDelay + 14500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":del", socket ); },   breatheEventDelay + 15500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( "Hold", socket ); },   breatheEventDelay + 15500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":2", socket ); },     breatheEventDelay + 15500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":1", socket ); },     breatheEventDelay + 16500 ) );
+    // Repeat breathing cycle
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":del", socket ); },   breatheEventDelay + 17500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( "Inhale", socket ); }, breatheEventDelay + 17500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":4", socket ); },     breatheEventDelay + 17500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":3", socket ); },     breatheEventDelay + 18500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":2", socket ); },     breatheEventDelay + 19500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":1", socket ); },     breatheEventDelay + 20500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":del", socket ); },   breatheEventDelay + 21500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( "Hold", socket ); },   breatheEventDelay + 21500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":4", socket ); },     breatheEventDelay + 21500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":3", socket ); },     breatheEventDelay + 22500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":2", socket ); },     breatheEventDelay + 23500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":1", socket ); },     breatheEventDelay + 24500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":del", socket ); },   breatheEventDelay + 25500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( "Exhale", socket ); }, breatheEventDelay + 25500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":6", socket ); },     breatheEventDelay + 25500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":5", socket ); },     breatheEventDelay + 26500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":4", socket ); },     breatheEventDelay + 27500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":3", socket ); },     breatheEventDelay + 28500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":2", socket ); },     breatheEventDelay + 29500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":1", socket ); },     breatheEventDelay + 30500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":del", socket ); },   breatheEventDelay + 31500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( "Hold", socket ); },   breatheEventDelay + 31500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":2", socket ); },     breatheEventDelay + 31500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":1", socket ); },     breatheEventDelay + 32500 ) );
+    // Repeat breathing cycle
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":del", socket ); },   breatheEventDelay + 33500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( "Inhale", socket ); }, breatheEventDelay + 33500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":4", socket ); },     breatheEventDelay + 33500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":3", socket ); },     breatheEventDelay + 34500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":2", socket ); },     breatheEventDelay + 35500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":1", socket ); },     breatheEventDelay + 36500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":del", socket ); },   breatheEventDelay + 37500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( "Hold", socket ); },   breatheEventDelay + 37500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":4", socket ); },     breatheEventDelay + 37500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":3", socket ); },     breatheEventDelay + 38500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":2", socket ); },     breatheEventDelay + 39500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":1", socket ); },     breatheEventDelay + 40500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":del", socket ); },   breatheEventDelay + 41500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( "Exhale", socket ); }, breatheEventDelay + 41500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":6", socket ); },     breatheEventDelay + 41500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":5", socket ); },     breatheEventDelay + 42500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":4", socket ); },     breatheEventDelay + 43500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":3", socket ); },     breatheEventDelay + 44500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":2", socket ); },     breatheEventDelay + 45500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":1", socket ); },     breatheEventDelay + 46500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":del", socket ); },   breatheEventDelay + 47500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( "Hold", socket ); },   breatheEventDelay + 47500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":2", socket ); },     breatheEventDelay + 47500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( ":1", socket ); },     breatheEventDelay + 48500 ) );
+    // End breathing cycle
+    botMsgTimer[ socket.id ].push( setTimeout( function() {
+        sendBotMsg( ":del", socket );
+        sendBotMsg( breatheResolvedResponse[ Math.floor( Math.random() * breatheResolvedResponse.length ) ], socket );
+        sendBotMsg( ':You can ask me for this "breathing exercise" again, if you want to.', socket );
+    }, breatheEventDelay + 49500 ) );
 }
 
 module.exports = socketEvents;
