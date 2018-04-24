@@ -17,7 +17,6 @@ var negativeArray = [
 var positiveArray = [
     'That sounds nice. What happened?',
     'Awesome! What happened?',
-    'Sounds good. Can you tell me more?',
     'Can you tell me more?',
     'That\'s interesting. Can you tell me more?',
 ];
