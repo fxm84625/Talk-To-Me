@@ -24,9 +24,12 @@ var positiveArray = [
 var namePositiveArray = [
     "What happened with ",
     "Did you do anything else with ",
+    ""
 ];
 var nameNegativeArray = [
     "Oh no, what happened with ",
+    "What happened with ",
+    "What else happened with ",
 ];
 var placePositiveArray = [
     "How did you like ",
@@ -35,6 +38,8 @@ var placePositiveArray = [
 ];
 var placeNegativeArray = [
     "Did you not like ",
+    "What was wrong with ",
+    "What was it about ",
 ];
 var breatheArray = [
     'Let\'s breathe for a moment.',
@@ -59,6 +64,14 @@ var eventKeyWords = [
         }
     }
 */
+var shortStoryArray = [
+    ['A Few Words on a Page by Bob the Cyclops', 'It\'s a powerful thign to write',
+    'To say what it mean','and write what you want',
+    'The ability to chagne letters into words','words into stories',
+    'and stories into adventures','You can change the look the people take on life',
+    'You can chagne what they read and think','You can show the world who you are',
+    'with just some words on a page',],
+]
 var context = {};
 
 // Function to generate a response for the Empathy bot to sent back to the User
@@ -138,6 +151,7 @@ function botResponse( socketId, dialogFlowResult, userStates, prevUserStates ) {
     // User's sentences are negative or neutral from last time
     else if( userStates[1] <= prevUserStates[1] ) {
         if( userStates[0] <= -15 ) return breatheArray[ Math.floor( Math.random() * breatheArray.length ) ];
+        if( userStates[0] <= -10 ) return shortStoryArray[ Math.floor( Math.random() * shortStoryArray ) ];
         // See if the User mentioned any new people or places
         for( var key in newContexts ) {
             if( key === "given-name" ) return nameNegativeArray[ Math.floor( Math.random() * nameNegativeArray.length ) ] + wordArrayToString( newContexts[ key ] ) + '?';
