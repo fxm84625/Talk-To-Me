@@ -5,61 +5,84 @@ html {
 body {
     height: 100%;
     padding: 30px;
-    display: flex;
+    /* display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    align-items: center; */
+    /* justify-content: center; */
+    background-color: black;
 }
 
 #main-container {
     width: 550px;
     max-height: 100%;
+    /* float: left; */
 }
 
 #msg-container {
+    font-family: “HelveticaNeue-Light”, “Helvetica Neue Light”, “Helvetica Neue”, Helvetica, Arial, “Lucida Grande”, sans-serif;
     height: 500px;
     overflow-y: auto;
+    background-color: black;
+}
+#panel-heading {
+    background-color: black;
 }
 
 #panel-title {
     display: flex;
     justify-content: space-between;
+    background-color: black;
 }
 #panel-title-left {
     flex: 0.74;
+    background-color: black;
 }
 #panel-title-right {
     flex: 0.26;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: black;
 }
 #voice-toggle, #visual-toggle {
-    
+
+}
+
+.chat {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .user-msg, .bot-msg, .bot-sub-msg {
-    border-radius: 6px;
+    /* border-radius: 6px; */
     padding: 7px;
     margin: 2px;
     width: 65%;
     display: inline-block;
     /* word-wrap */
-    white-space: pre-wrap;      /* CSS3 */   
-    white-space: -moz-pre-wrap; /* Firefox */    
-    white-space: -pre-wrap;     /* Opera <7 */   
-    white-space: -o-pre-wrap;   /* Opera 7 */    
+    white-space: pre-wrap;      /* CSS3 */
+    white-space: -moz-pre-wrap; /* Firefox */
+    white-space: -pre-wrap;     /* Opera <7 */
+    white-space: -o-pre-wrap;   /* Opera 7 */
     word-wrap: break-word;      /* IE */
 }
 .user-msg {
-    background-color: #0084ff;
-    color: white;
+    color: lightgray;
     float: right;
+    /* font-family: “HelveticaNeue-Light”, “Helvetica Neue Light”, “Helvetica Neue”, Helvetica, Arial, “Lucida Grande”, sans-serif; */
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
 }
 .bot-msg {
-    background-color: #eee;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    /* background-color: #eee; */
 }
 .bot-sub-msg {
-    background-color: #eee;
+    /* background-color: #eee; */
     width: inherit;
 }

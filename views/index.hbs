@@ -1,33 +1,39 @@
-<div id="main-container" class="panel panel-info">
-    <div class="panel-heading">
-        <div class="panel-title" id="panel-title">
-            <div id="panel-title-left"> Talk to Me </div>
-            <div id="panel-title-right">
-                <input id="voice-toggle" type="checkbox" data-toggle="toggle" data-on="Voice" data-off="Voice" data-size="small">
-                <input id="visual-toggle" type="checkbox" data-toggle="toggle" data-on="Visual" data-off="Visual" data-size="small">
+<div id="main-container">
+    <div class="chat panel panel-info ">
+        <div class="panel-heading">
+            <div class="panel-title" id="panel-title">
+                <div id="panel-title-left"> Talk to Me </div>
+                <div id="panel-title-right">
+                    <input id="voice-toggle" type="checkbox" data-toggle="toggle" data-on="Voice" data-off="Voice" data-size="small">
+                    <input id="visual-toggle" type="checkbox" data-toggle="toggle" data-on="Visual" data-off="Visual" data-size="small">
+                </div>
             </div>
         </div>
-    </div>
-    <div id="msg-container" class="panel-body">
-        <div class="bot-msg">Hi! I'm an Empathy bot that you can vent to.</div>
-        <div class="bot-msg">I may get some things wrong, but I will still be listening.</div>
-        <div class="bot-msg">You can enable my Voice, or my Visual!</div>
-    {{#if msgArray}}
-    {{#each msgArray}}
-        {{#if msgArray.bot}}
-        <div class="bot-msg">{{this.text}}</div>
-        {{else}}
-        <div class="user-msg">{{this.text}}</div>
+        <div id="msg-container" class="panel-body">
+            <div class="bot-msg">Hi! I'm an Empathy bot that you can vent to.</div>
+            <div class="bot-msg">I may get some things wrong, but I will still be listening.</div>
+            <div class="bot-msg">You can enable my Voice, or my Visual!</div>
+        {{#if msgArray}}
+        {{#each msgArray}}
+            {{#if msgArray.bot}}
+            <div class="bot-msg">{{this.text}}</div>
+            {{else}}
+            <div class="user-msg">{{this.text}}</div>
+            {{/if}}
+        {{/each}}
         {{/if}}
-    {{/each}}
-    {{/if}}
+        </div>
+        <div class="panel-footer">
+            <form class="input-group" autocomplete="off">
+                <input id="msg-field" type="text" name="msg" class="form-control" autocomplete="off" />
+                <span class="input-group-btn">
+                    <button id="msg-submit" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span></button>
+                </span>
+            </form>
+        </div>
+        <div class="information-container">
+            <div></div>
+        </div>
     </div>
-    <div class="panel-footer">
-        <form class="input-group" autocomplete="off">
-            <input id="msg-field" type="text" name="msg" class="form-control" autocomplete="off" />
-            <span class="input-group-btn">
-                <button id="msg-submit" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send"></span></button>
-            </span>
-        </form>
-    </div>
+    <div class="chat"></div>
 </div>
