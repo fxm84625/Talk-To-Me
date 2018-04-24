@@ -23,8 +23,8 @@ var positiveArray = [
 ];
 var namePositiveArray = [
     "What happened with ",
-    "Did you do anything else with ",
-    ""
+    "How do you know ",
+    "Are you good friends with "
 ];
 var nameNegativeArray = [
     "Oh no, what happened with ",
