@@ -55,7 +55,8 @@ to converse with the user therapeutically based on psychology research.
     - Allows users to speak to the bot
 * Text to Speech
     - Allows users to listen to responses of the bot
-* Visual Display of Bot
+* Data Visualisation
+    - Tracks the user's facial expression and mirrors empathy
 * Calming Techniques
     - Breathing exercises
     - Reading exercises
@@ -72,6 +73,7 @@ The Web Application uses code from several open source packages.
 - [APIAI](https://dialogflow.com/)
 - [Node.js](https://nodejs.org/)
 - [Sentiment](https://www.npmjs.com/package/sentiment)
+- [clmtrackr](https://github.com/auduno/clmtrackr)
 - [Express](https://www.npmjs.com/package/express)
 - [socket.io](https://github.com/socketio/socket.io)
 
@@ -92,7 +94,13 @@ Contact
 __Hyesoo Shin__
 
 Contributions
-- Research behind bot empathy
+- Research behind Bot Empathy
+- Created Interactive User Interface
+- UI/UX Design
+
+Contact
+- [Github](https://github.com/hyezus)
+- [LinkedIn](https://www.linkedin.com/in/hyesoo-shin-22b106161/)
 
 __James Wang__
 
