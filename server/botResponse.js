@@ -56,6 +56,11 @@ var eventKeyWords = [
     'exercise', 'exercise.', 'exercise,', 'exercise?', 'exercise?.',
     'event',    'event.',    'event,',    'event?',    'event?.'
 ];
+var storyKeyWords = [
+    'story', 'story,','story.','story?','storytelling', 'stories',
+    'stories?','stories!','stories,', 'storytelling,','storytelling?',
+    'storytime','storytime!','storytime?','storytime,',
+]
 /** Save key words for each User, such as names and locations
     {
         socketId: {
@@ -64,13 +69,11 @@ var eventKeyWords = [
         }
     }
 */
-var shortStoryArray = [
-    ['A Few Words on a Page by Bob the Cyclops', 'It\'s a powerful thign to write',
-    'To say what it mean','and write what you want',
-    'The ability to chagne letters into words','words into stories',
-    'and stories into adventures','You can change the look the people take on life',
-    'You can chagne what they read and think','You can show the world who you are',
-    'with just some words on a page',],
+var shortStoryArray =  [
+    'Let\'s read a story then!',
+    'Let\'s just take a moment to read a story',
+    'We should take time to read a story',
+    'I have a story that can help you relax!',
 ]
 var context = {};
 
@@ -105,13 +108,21 @@ function botResponse( socketId, dialogFlowResult, userStates, prevUserStates ) {
     // If the User gave a greeting, give the greeting response
     if( dialogFlowResult.action === 'input.welcome' ) return dialogFlowResult.fulfillment.speech + ' ' + greetingArray[ Math.floor( Math.random() * greetingArray.length ) ];
     // Event when the User asks for the breathing exercise
+    // Event when the User asks for the story exercise
     var userTextSplit = dialogFlowResult.resolvedQuery.split(' ');
+    console.log(userTextSplit)
     for( var i = 0; i < userTextSplit.length; i++ ) {
         if( breatheKeyWords.includes( userTextSplit[i] ) ) {
             if( dialogFlowResult.action === "smalltalk.agent.can_you_help" || eventKeyWords.includes( userTextSplit[i+1] ) ) {
                 return breatheArray[ Math.floor( Math.random() * breatheArray.length ) ];
             }
         }
+        if( storyKeyWords.includes( userTextSplit[i] ) ) {
+          if( dialogFlowResult.action === "smalltalk.agent.can_you_help" || eventKeyWords.includes( userTextSplit[i+1] ) ) {
+              return shortStoryArray[ Math.floor( Math.random() * shortStoryArray.length ) ];
+          }
+        }
+
     }
     // If the User makes general small talk, give the DialogFlow response
     if( dialogFlowResult.action.split('.')[0] === 'smalltalk' ) return dialogFlowResult.fulfillment.speech;
@@ -151,7 +162,7 @@ function botResponse( socketId, dialogFlowResult, userStates, prevUserStates ) {
     // User's sentences are negative or neutral from last time
     else if( userStates[1] <= prevUserStates[1] ) {
         if( userStates[0] <= -15 ) return breatheArray[ Math.floor( Math.random() * breatheArray.length ) ];
-        if( userStates[0] <= -10 ) return shortStoryArray[ Math.floor( Math.random() * shortStoryArray ) ];
+        if( userStates[0] <= -10 ) return shortStoryArray[ Math.floor( Math.random() * shortStoryArray.length ) ];
         // See if the User mentioned any new people or places
         for( var key in newContexts ) {
             if( key === "given-name" ) return nameNegativeArray[ Math.floor( Math.random() * nameNegativeArray.length ) ] + wordArrayToString( newContexts[ key ] ) + '?';
