@@ -1,3 +1,7 @@
+// $(document).ready(function(){
+// document.homeform.input.focus();
+// });
+
 $( document ).ready( function() {
     // Client side Socket connection
     // Server side Socket event handlers are in /server/socket.js
@@ -5,14 +9,14 @@ $( document ).ready( function() {
     var socket = io.connect( url );
 
     // Focus on the input element, where user's type their messages
-    $( "#text-field" ).focus();
+    $( "#msg-field" ).focus();
     // Scroll the message container element to the bottom, so users see the most recent messages
     $( '#msg-container' ).scrollTop( $( '#msg-container' )[0].scrollHeight );
 
     // Variables for the Empathy bot's voice ( text to speech ) and visual
     var voiceToggle = false;
     var visualToggle = false;
-    
+
     // Handle toggling Empathy bot voice and visual
     $( '#voice-toggle' ).on( 'change', function() {
         voiceToggle = $( this ).prop( 'checked' );
