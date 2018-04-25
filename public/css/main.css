@@ -4,51 +4,33 @@ html {
 
 body {
     height: 100%;
+    width: 100%;
     padding: 30px;
     /* display: flex;
     flex-direction: column;
     align-items: center; */
     /* justify-content: center; */
+    overflow: hidden;
     background-color: black;
 }
 
 #main-container {
-    width: 50%;
-    max-height: 100%;
+    width: 40%;
+    height: 100%;
+    position: fixed;
+    left: 15%;
+    top: 8%;
+    z-index: 500;
     /* float: left; */
 }
 
 #msg-container {
-    height: 500px;
+    height: 80%;
     overflow-y: auto;
     background-color: black;
     /* vertical-align:bottom; */
 }
 
-/* .typing{
-  position: absolute;
-  bottom: 5%;
-} */
-/* #panel-heading {
-    background-color: black;
-}
-
-#panel-title {
-    display: flex;
-    justify-content: space-between;
-    background-color: black;
-}
-#panel-title-left {
-    flex: 0.74;
-    background-color: black;
-}
-#panel-title-right {
-    flex: 0.26;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: black;
-} */
 #voice-toggle, #visual-toggle {
 
 }
@@ -58,6 +40,7 @@ body {
     flex: 1;
     flex-direction: column;
     justify-content: center;
+    height: 80%;
 }
 
 .user-msg, .bot-msg, .bot-sub-msg {
@@ -100,27 +83,14 @@ input{
     width: 90%;
 }
 
-/* input[type=text]:focus {
-    border: none;
-} */
-
-/* textarea {
-    width: 100%;
-    height: 150px;
-    padding: 12px 20px;
-    box-sizing: border-box;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    background-color: #f8f8f8;
-    resize: none;
-} */
-
 textarea, input, button { outline: none; }
+
 .typing{
   display: inline-block;
   border-top: 2px solid #999;
   width: 100%;
 }
+
 button {
     background-color: Transparent;
     background-repeat:no-repeat;
@@ -135,7 +105,74 @@ button {
     width: 7%;
 }
 
+.options{
+  display: inline-block;
+  position: fixed;
+  left: 5%;
+  bottom: 7%;
+  z-index: 500;
+}
+
+#volume-toggle, #voice-toggle{
+  padding-right: 20px;
+}
+
 .icon{
   color: white;
   font-size:30px;
+}
+
+.text{
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  color: white;
+  text-decoration: none;
+}
+
+#info{
+	font-weight: bold;
+	font-size: 50px;
+	letter-spacing: 0.05em;
+
+	position: fixed;
+	float: right;
+	right: 5%;
+	bottom: 3%;
+}
+
+#info:hover{
+	color: white;
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: black;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    width: 50%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+}
+
+.close:hover,
+.close:focus {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
 }

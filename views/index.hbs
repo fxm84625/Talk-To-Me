@@ -14,7 +14,6 @@
         {{/each}}
         {{/if}}
         </div>
-        <div id="line"></div>
         <div class="typing">
             <form autocomplete="off">
                 <input id="msg-field" type="text" name="msg" autocomplete="off" />
@@ -23,11 +22,25 @@
                 </span>
             </form>
         </div>
-        <span class="glyphicon glyphicon-volume-up icon" id="volume-toggle"></span>
-        <span class="fa fa-microphone icon" id="voice-toggle"></span>
-        <div class="information-container">
-            <div></div>
-        </div>
     </div>
-    <div class="chat"></div>
+</div>
+
+<!-- buttons -->
+<div class="options">
+  <span class="fa fa-microphone icon" id="voice-toggle"></span>
+  <span class="glyphicon glyphicon-volume-up icon" id="volume-toggle"></span>
+</div>
+
+<!-- visuals -->
+<video style="display: none" id="video" width="100" height="100" preload="auto" playsinline autoplay></video>
+
+<!-- info -->
+<a class="text" id="info">
+<i>Talk To Me</i>
+</a>
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p class="text">Some text in the Modal..</p>
+  </div>
 </div>
