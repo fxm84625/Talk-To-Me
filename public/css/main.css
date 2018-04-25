@@ -13,18 +13,23 @@ body {
 }
 
 #main-container {
-    width: 550px;
+    width: 50%;
     max-height: 100%;
     /* float: left; */
 }
 
 #msg-container {
-    font-family: “HelveticaNeue-Light”, “Helvetica Neue Light”, “Helvetica Neue”, Helvetica, Arial, “Lucida Grande”, sans-serif;
     height: 500px;
     overflow-y: auto;
     background-color: black;
+    /* vertical-align:bottom; */
 }
-#panel-heading {
+
+/* .typing{
+  position: absolute;
+  bottom: 5%;
+} */
+/* #panel-heading {
     background-color: black;
 }
 
@@ -43,7 +48,7 @@ body {
     justify-content: space-between;
     align-items: center;
     background-color: black;
-}
+} */
 #voice-toggle, #visual-toggle {
 
 }
@@ -56,10 +61,14 @@ body {
 }
 
 .user-msg, .bot-msg, .bot-sub-msg {
+    font-family: “HelveticaNeue-Light”, “Helvetica Neue Light”, “Helvetica Neue”, Helvetica, Arial, “Lucida Grande”, sans-serif;
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 0.03em;
     /* border-radius: 6px; */
     padding: 7px;
     margin: 2px;
-    width: 65%;
+    width: 100%;
     display: inline-block;
     /* word-wrap */
     white-space: pre-wrap;      /* CSS3 */
@@ -69,20 +78,64 @@ body {
     word-wrap: break-word;      /* IE */
 }
 .user-msg {
-    color: lightgray;
+    color: #999;
     float: right;
-    /* font-family: “HelveticaNeue-Light”, “Helvetica Neue Light”, “Helvetica Neue”, Helvetica, Arial, “Lucida Grande”, sans-serif; */
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
 }
 .bot-msg {
     color: white;
-    text-decoration: none;
-    font-weight: bold;
-    /* background-color: #eee; */
 }
 .bot-sub-msg {
-    /* background-color: #eee; */
     width: inherit;
+}
+
+input{
+    border: none;
+    background-color: black;
+    padding-top: 15px;
+    color: #999;
+    font-family: “HelveticaNeue-Light”, “Helvetica Neue Light”, “Helvetica Neue”, Helvetica, Arial, “Lucida Grande”, sans-serif;
+    text-decoration: none;
+    font-weight: 200;
+    letter-spacing: 0.03em;
+    width: 90%;
+}
+
+/* input[type=text]:focus {
+    border: none;
+} */
+
+/* textarea {
+    width: 100%;
+    height: 150px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    resize: none;
+} */
+
+textarea, input, button { outline: none; }
+.typing{
+  display: inline-block;
+  border-top: 2px solid #999;
+  width: 100%;
+}
+button {
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    width: 7%;
+}
+
+.icon{
+  color: white;
+  font-size:30px;
 }
