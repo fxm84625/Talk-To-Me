@@ -209,37 +209,6 @@ particlesJS('particles-js', {
 
     setInterval(positionLoop, 100)
 
-    //setInterval(() => api.removeParticles(40 * (1500/200)), 1500)
-    //setInterval(() => api.removeParticles(380), 3000)
-    //positionLoop();
-
-    // var old;
-    // function positionLoop() {
-    //   // requestAnimFrame(positionLoop);
-    //   var positions = ctracker.getCurrentPosition();
-    //   // if(!old) old = positions;
-		// 	// var delta = positions.map((item,ix) => [item[0]-old[ix][0], item[1]-old[ix][1]]);
-    //   // print the positions
-    //   // old = positions;
-    //   var positionString = "";
-    //   if (positions) {
-    //     for (var p = 0;p < 10;p++) {
-    //
-    //       // api.repulseParticle(pos_x: (delta[p][0]), pos_y: (delta[p][1]));
-    //       //console.log(p, positions[p][0], positions[p][1])
-    //       //positionString += "featurepoint "+p+" : ["+positions[p][0].toFixed(2)+","+positions[p][1].toFixed(2)+"]<br/>";
-    //     }
-    //     // api.pushParticles(3, {pos_x: positions[0][0], pos_y: positions[0][1]})
-    //     // api.removeParticles(2)
-    //     // console.log(positionString);
-    //     // api.repulseParticle({x: positions[p][0], y: positions[p][1]});
-    //     // console.log(delta[0][0], delta[0][1]);
-    //   }
-    // }
-    //
-    // setInterval(positionLoop, 1000);
-    // // positionLoop();
-
 
 //modal
     var modal = document.getElementById('myModal');
