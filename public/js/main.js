@@ -1,28 +1,31 @@
-//mode
+//keyboard/vocal button
+
 $('document').ready(function() {
+    window.hyesoo = {x:window.pJSDom[0].pJS.canvas.w / 2, y:window.pJSDom[0].pJS.canvas.h / 2, sx:10, sy:10}
+
     $('#mode').click( function() {
         var $div = $('#main-container');
-        var $main = $('#visuals');
+        const api = pJSDom[0].pJS.fn.modes
         $('#main-container').not($div).hide();
 
         if($(this).find('span').hasClass('fa fa-microphone icon')){
+          window.hyesoo.x = window.pJSDom[0].pJS.canvas.w / 2;
+          window.hyesoo.y = window.pJSDom[0].pJS.canvas.h/2;
           $(this).find('span').removeClass('fa fa-microphone icon');
           $(this).find('span').addClass('fa fa-keyboard-o icon');
+          api.pushParticles(100);
           $div.animate({left: ["-=1000px", "swing"], opacity: ["toggle", "swing"]}, 500);
-          $main.animate({width:["40%", "swing"], right:["30%","swing"], top:["30%", "swing"]}, 500);
         } else if($(this).find('span').hasClass('fa fa-keyboard-o icon')){
-        $(this).find('span').removeClass('fa fa-keyboard-o icon');
-        $(this).find('span').addClass('fa fa-microphone icon');
-        $div.animate({left: ["18%", "swing"], opacity: ["toggle", "swing"]}, 500);
-        $main.animate({width:["18%", "swing"], right:["10%","swing"], top:["23%", "swing"]}, 500);
+          window.hyesoo.x = window.pJSDom[0].pJS.canvas.w/7*5.5;
+          window.hyesoo.y = window.pJSDom[0].pJS.canvas.h/11*4.5;
+          $(this).find('span').removeClass('fa fa-keyboard-o icon');
+          $(this).find('span').addClass('fa fa-microphone icon');
+          api.removeParticles(100);
+          $div.animate({left: ["18%", "swing"], opacity: ["toggle", "swing"]}, 500);
       };
     });
 
-    // width: [ "toggle", "swing" ]
-    // $div.slideToggle();
-
     //volume
-
       $('#vol').click( function() {
         if ($(this).find('span').hasClass('glyphicon glyphicon-volume-up icon')){
           $(this).find('span').removeClass('glyphicon glyphicon-volume-up icon');
@@ -34,34 +37,33 @@ $('document').ready(function() {
       });
 });
 
-
-
 //visuals
+
 particlesJS('particles-js', {
       "particles": {
         "number": {
-          "value": 1,
+          "value": 1000,
           "density": {
             "enable": false,
             "value_area": 481.0236182596568
           }
         },
         "color": {
-          "value": "#ffffff"
+          "value": "#CCC"
         },
-        "opacity": {
-          "value": 0.5,
-          "random": false,
-          "anim": {
-            "enable": false,
-            "speed": 1,
-            "opacity_min": 0.1,
-            "sync": false
+        "shape": {
+          "type": "polygon",
+          "stroke": {
+            "width": 0,
+            "color": "#000000"
           }
+        },
+        "polygon": {
+          "nb_sides": 4
         },
         "size": {
           "value": 0,
-          "random": true,
+          "random": false,
           "anim": {
             "enable": false,
             "speed": 10,
@@ -71,7 +73,7 @@ particlesJS('particles-js', {
         },
         "line_linked": {
           "enable": true,
-          "distance": 48.10236182596568,
+          "distance": 20.10236182596568,
           "color": "#ffffff",
           "opacity": .7,
           "width": 1
@@ -95,7 +97,7 @@ particlesJS('particles-js', {
         "detect_on": "canvas",
         "events": {
           "onhover": {
-            "enable": false,
+            "enable": true,
             "mode": "repulse"
           },
           "onclick": {
@@ -119,7 +121,7 @@ particlesJS('particles-js', {
             "speed": 3
           },
           "repulse": {
-            "distance": 400,
+            "distance": 30,
             "duration": 0.4
           },
           "push": {
@@ -132,7 +134,6 @@ particlesJS('particles-js', {
       },
       "retina_detect": true
     })
-
     const api = pJSDom[0].pJS.fn.modes
 
     var videoInput = document.getElementById('video');
@@ -166,32 +167,78 @@ particlesJS('particles-js', {
       alert("Your browser does not seem to support getUserMedia, using a fallback video instead.");
     }
 
-    var old;
-    function positionLoop() {
-      // requestAnimFrame(positionLoop);
-      var positions = ctracker.getCurrentPosition();
-      // if(!old) old = positions;
-			// var delta = positions.map((item,ix) => [item[0]-old[ix][0], item[1]-old[ix][1]]);
-      // print the positions
-      // old = positions;
-      var positionString = "";
-      if (positions) {
-        for (var p = 0;p < 10;p++) {
 
-          // api.repulseParticle(pos_x: (delta[p][0]), pos_y: (delta[p][1]));
-          //console.log(p, positions[p][0], positions[p][1])
-          //positionString += "featurepoint "+p+" : ["+positions[p][0].toFixed(2)+","+positions[p][1].toFixed(2)+"]<br/>";
+    function scale(positions, ix, scale) {
+
+          const cx = window.hyesoo.x;
+          const cy = window.hyesoo.y;
+
+          const w = (positions[13][0] - positions[1][0]) / 2
+          const h = (positions[13][1] - positions[1][1]) / 2
+
+          const xs = window.hyesoo.sx;
+          const xy = window.hyesoo.sy;
+          // const xs = 10//cx / w
+          // const xy = 10//cy / h
+
+          const x = ((positions[ix][0] - positions[62][0]) * xs) + cx
+          const y = ((positions[ix][1] - positions[62][1]) * xy) + cy
+
+          return {x, y}
         }
-        api.pushParticles(3, {pos_x: positions[0][0], pos_y: positions[0][1]})
-        api.removeParticles(2)
-        // console.log(positionString);
-        // api.repulseParticle({x: positions[p][0], y: positions[p][1]});
-        // console.log(delta[0][0], delta[0][1]);
+
+      function positionLoop() {
+
+      //requestAnimFrame(positionLoop);
+      var positions = ctracker.getCurrentPosition();
+      // do something with the positions ...
+      // print the positions
+      var positionString = "";
+      //console.log(positions)
+
+      if (positions) {
+        const pJS = pJSDom[0].pJS
+        pJS.particles.array.splice(pJS.particles.array.length - positions.length, positions.length);
+        for (var p = 0;p < positions.length;p++) {
+          let pt = scale(positions, p, 10);
+          api.pushParticles(1, {pos_x: pt.x, pos_y: pt.y})
+          // console.log(pt);
+        }
       }
     }
 
-    setInterval(positionLoop, 1000);
-    // positionLoop();
+    setInterval(positionLoop, 100)
+
+    //setInterval(() => api.removeParticles(40 * (1500/200)), 1500)
+    //setInterval(() => api.removeParticles(380), 3000)
+    //positionLoop();
+
+    // var old;
+    // function positionLoop() {
+    //   // requestAnimFrame(positionLoop);
+    //   var positions = ctracker.getCurrentPosition();
+    //   // if(!old) old = positions;
+		// 	// var delta = positions.map((item,ix) => [item[0]-old[ix][0], item[1]-old[ix][1]]);
+    //   // print the positions
+    //   // old = positions;
+    //   var positionString = "";
+    //   if (positions) {
+    //     for (var p = 0;p < 10;p++) {
+    //
+    //       // api.repulseParticle(pos_x: (delta[p][0]), pos_y: (delta[p][1]));
+    //       //console.log(p, positions[p][0], positions[p][1])
+    //       //positionString += "featurepoint "+p+" : ["+positions[p][0].toFixed(2)+","+positions[p][1].toFixed(2)+"]<br/>";
+    //     }
+    //     // api.pushParticles(3, {pos_x: positions[0][0], pos_y: positions[0][1]})
+    //     // api.removeParticles(2)
+    //     // console.log(positionString);
+    //     // api.repulseParticle({x: positions[p][0], y: positions[p][1]});
+    //     // console.log(delta[0][0], delta[0][1]);
+    //   }
+    // }
+    //
+    // setInterval(positionLoop, 1000);
+    // // positionLoop();
 
 
 //modal
