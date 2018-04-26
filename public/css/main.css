@@ -4,66 +4,47 @@ html {
 
 body {
     height: 100%;
-    padding: 30px;
-    /* display: flex;
-    flex-direction: column;
-    align-items: center; */
-    /* justify-content: center; */
+    width: 100%;
+    overflow: hidden;
     background-color: black;
 }
 
 #main-container {
-    width: 50%;
-    max-height: 100%;
+    width: 35%;
+    height: 73%;
+    position: fixed;
+    border: solid 30px black;
+    left: 18%;
+    top: 15%;
+    z-index: 800;
+    background-color: black;
+    overflow-y: hidden;
     /* float: left; */
 }
 
+.mask{
+  position: absolute;
+  width: 100%;
+  height: 15%;
+  z-index: 100;
+  background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+}
+
 #msg-container {
-    height: 500px;
     overflow-y: auto;
     background-color: black;
     /* vertical-align:bottom; */
 }
 
-/* .typing{
-  position: absolute;
-  bottom: 5%;
-} */
-/* #panel-heading {
-    background-color: black;
-}
-
-#panel-title {
-    display: flex;
-    justify-content: space-between;
-    background-color: black;
-}
-#panel-title-left {
-    flex: 0.74;
-    background-color: black;
-}
-#panel-title-right {
-    flex: 0.26;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: black;
-} */
 #voice-toggle, #visual-toggle {
 
-}
-
-.chat {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    justify-content: center;
 }
 
 .user-msg, .bot-msg, .bot-sub-msg {
     font-family: “HelveticaNeue-Light”, “Helvetica Neue Light”, “Helvetica Neue”, Helvetica, Arial, “Lucida Grande”, sans-serif;
     text-decoration: none;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 500;
     letter-spacing: 0.03em;
     /* border-radius: 6px; */
     padding: 7px;
@@ -77,12 +58,31 @@ body {
     white-space: -o-pre-wrap;   /* Opera 7 */
     word-wrap: break-word;      /* IE */
 }
+
+.pin-bottom{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.right{
+  float: right;
+  max-width: 80%;
+}
+
+p{
+    padding: 0;
+    margin: 0;
+}
+
 .user-msg {
     color: #999;
-    float: right;
+    padding: 0;
 }
+
 .bot-msg {
     color: white;
+    width: 80%;
 }
 .bot-sub-msg {
     width: inherit;
@@ -95,34 +95,40 @@ input{
     color: #999;
     font-family: “HelveticaNeue-Light”, “Helvetica Neue Light”, “Helvetica Neue”, Helvetica, Arial, “Lucida Grande”, sans-serif;
     text-decoration: none;
-    font-weight: 200;
+    font-weight: 400;
     letter-spacing: 0.03em;
     width: 90%;
 }
 
-/* input[type=text]:focus {
-    border: none;
-} */
-
-/* textarea {
-    width: 100%;
-    height: 150px;
-    padding: 12px 20px;
-    box-sizing: border-box;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    background-color: #f8f8f8;
-    resize: none;
-} */
-
 textarea, input, button { outline: none; }
+
 .typing{
   display: inline-block;
   border-top: 2px solid #999;
   width: 100%;
 }
+
+#visuals{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 500;
+}
+
+#particles-js{
+      width: 100%;
+      height: 100%;
+      background-color: transparent;
+      background-image: url('');
+      background-size: cover;
+      background-position: 50% 50%;
+      background-repeat: no-repeat;
+}
+
 button {
-    background-color: Transparent;
+    background-color: black;
     background-repeat:no-repeat;
     border: none;
     cursor:pointer;
@@ -132,10 +138,93 @@ button {
     text-decoration: none;
     font-size: 18px;
     color: white;
-    width: 7%;
+    margin: auto;
+}
+
+.options{
+  width: 45px;
+  position: fixed;
+  left: 5%;
+  top: 10%;
+  z-index: 800;
+}
+
+#mode, #vol{
+  width: 45px !important;
+  height: 45px !important;
+  margin-bottom: 25% !important;
 }
 
 .icon{
   color: white;
   font-size:30px;
+}
+
+.text{
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  color: white;
+  text-decoration: none;
+}
+
+#info{
+	font-weight: bold;
+	font-size: 50px;
+	letter-spacing: 0.05em;
+
+  background-color: black;
+  padding-left: 2%;
+  padding-right: 2%;
+	position: fixed;
+	float: right;
+	right: 6.5%;
+	bottom: 5%;
+}
+
+#info:hover{
+	color: white;
+}
+
+#intro{
+  font-weight: bold;
+  color: black;
+  font-size: 16px;
+  letter-spacing: 0.05em;
+  line-height: 1.5;
+  padding: 10%;
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: white;
+    margin: 7% auto; /* 15% from the top and centered */
+    width: 50%;
+    border-radius: 0%;
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    padding: 5%;
+    font-size: 28px;
+    font-weight: 200;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }

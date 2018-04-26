@@ -1,20 +1,41 @@
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p class="text" id="intro">Talk to Me is a venting chatbot that offers a disposable experience of venting.
+    Talk to Me is an Artificial Empathy which understands your emotion (qualitative data) by translating it to quantitative data. Subsequently, it responds according to its programmed tier of distress, including simple exercises designed to help you relax.
+    These responses offers direct understanding through visual interaction which reciprocates to your facial expression and encourages you to vent more to empty any suppressed negativity.
+    <br/>
+    <br/>
+    If you're somewhere that is loud or if you don't feel like speaking, feel free to click the type icon on the far left of the screen to switch to a chatbox mode. You can always switch back!
+    <br/>
+    <br/>
+    If you prefer silence, feel free to click on the speaker icon to mute! Talk to Me is always here for you.
+    <br/>
+    <br/>
+    Feel free to take as long as it takes to outlet any frustration and find relief!
+    </p>
+  </div>
+</div>
+
 <div id="main-container">
-    <div class="chat">
+  <div class="mask">
+  </div>
+      <div class="pin-bottom">
         <div id="msg-container" class="panel-body">
-            <div class="bot-msg">Hi! I'm an Empathy bot that you can vent to.</div>
-            <div class="bot-msg">I may get some things wrong, but I will still be listening.</div>
-            <div class="bot-msg">You can enable my Voice, or my Visual!</div>
+            <div class="bot-msg">Hi! I'm here for you to vent.</div>
+            <div class="bot-msg">You can tell me anything!</div>
+            <div class="bot-msg">I may get some things wrong, but I will always be listening.</div>
+            <div class="bot-msg">You can switch to the talking mode, or just enable my Voice!</div>
         {{#if msgArray}}
         {{#each msgArray}}
             {{#if msgArray.bot}}
             <div class="bot-msg">{{this.text}}</div>
             {{else}}
-            <div class="user-msg">{{this.text}}</div>
+            <div class="user-msg"><p class="right">{{this.text}}</p></div>
             {{/if}}
         {{/each}}
         {{/if}}
         </div>
-        <div id="line"></div>
         <div class="typing">
             <form autocomplete="off">
                 <input id="msg-field" type="text" name="msg" autocomplete="off" />
@@ -23,11 +44,21 @@
                 </span>
             </form>
         </div>
-        <span class="glyphicon glyphicon-volume-up icon" id="volume-toggle"></span>
-        <span class="fa fa-microphone icon" id="voice-toggle"></span>
-        <div class="information-container">
-            <div></div>
-        </div>
-    </div>
-    <div class="chat"></div>
+      </div>
 </div>
+
+<!-- buttons -->
+<div class="options">
+    <button id="mode"><span class="fa fa-microphone icon" id="voice-toggle"></span></button>
+    <button id="vol"><span class="glyphicon glyphicon-volume-up icon" id="volume-toggle"></span></button>
+</div>
+
+<!-- visuals -->
+<div id="visuals">
+    <video style="display: none" id="video" width="100" height="100" preload="auto" playsinline autoplay></video>
+    <div class="canvas" id="particles-js"/>
+<div>
+<!-- info -->
+<a class="text" id="info">
+<i>Talk To Me</i>
+</a>

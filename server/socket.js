@@ -42,7 +42,10 @@ var userStates = {};
 var botMsgTimer = {};
 var defaultBotWaitTime = 4000;
 function clearBotTimeouts( socketId ) {
-    if( !botMsgTimer[ socketId ] ) return;
+    if( !botMsgTimer[ socketId ] ) {
+        botMsgTimer[ socketId ] = [];
+        return;
+    }
     for( var i = 0; i < botMsgTimer[ socketId ].length; i++ ) {
         clearTimeout( botMsgTimer[ socketId ][i] );
     }
@@ -119,6 +122,10 @@ function startBotMsgTimeout( socket ) {
                 userStates[2] = "active";
                 startBreatheEvent( socket );
             }
+            if( botEvent === 'story' ) {
+                userStates[2] = "active";
+                startStoryEvent( socket );
+            }
         })
         .catch( error => console.log( "Error getting response from DialogFlow:\n" + error ) );
     }, defaultBotWaitTime ) );
@@ -157,9 +164,16 @@ function getBotMsgEvent( text ) {
     var splitString = text.split( ' ' );
     for( var i = 0; i < splitString.length; i++ ) {
         if( breatheKeyWords.includes( splitString[i] ) ) return 'breathe';
+        if( storyKeyWords.includes( splitString[i] ) ) return 'story';
     }
     return '';
 }
+var storyKeyWords = [
+    'story', 'story,','story.','story?','storytelling', 'stories',
+    'stories?','stories!','stories,', 'storytelling,','storytelling?',
+    'storytime','storytime!','storytime?','storytime,',
+]
+
 var breatheKeyWords = [ 'breath',    'breath.',    'breath,',    'breath?',    'breath?.',
                         'breathe',   'breathe.',   'breathe,',   'breathe?',   'breathe?.',
                         'breathing', 'breathing.', 'breathing,', 'breathing?', 'breathing?.' ];
@@ -254,5 +268,41 @@ function startBreatheEvent( socket ) {
         sendBotMsg( ':You can ask me for this "breathing exercise" again, if you want to.', socket );
     }, breatheEventDelay + 45500 ) );
 }
-
+// Story Exercise
+var shortStoryArray = [
+    ['A Few Words on a Page by Bob the Cyclops', 'It\'s a powerful thing to write',
+    'To say what it mean','and write what you want',
+    'The ability to change letters into words','words into stories',
+    'and stories into adventures','You can change the look the people take on life',
+    'You can change what they read and think','You can show the world who you are',
+    'with just some words on a page',],
+]
+function startStoryEvent( socket ) {
+// Bot messages starting with ":" character are appended to the previous message
+// Bot messages that are equal to ":del" removes the previous message
+// Only messages without a ":" character are spoken through text-to-speech
+    clearBotTimeouts( socket.id );
+    botMsgTimer[ socket.id ].push( setTimeout( function() {
+        sendBotMsg( "Ready?", socket );
+        sendBotMsg( ":Feel free to stop at any time. Please do not strain yourself.", socket );
+    }, breatheEventDelay ) );
+    //Story Telling Loop
+    var story = shortStoryArray[0]
+    console.log(story[0])
+    console.log(story[1])
+    var totalLength = 0;
+        //Math.floor( Math.random() * (shortStoryArray.length - 1) )
+    for (var i = 0; i < story.length; i++) {
+        (function(ind) {
+            botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( story[ind], socket ); }, breatheEventDelay + (ind * 3000) + 1500 ));
+        })(i);
+        totalLength +=story[i].length
+    }
+    //End Story Cycle
+    botMsgTimer[ socket.id ].push( setTimeout( function() {
+        sendBotMsg( ":del", socket );
+        sendBotMsg( breatheResolvedResponse[ Math.floor( Math.random() * breatheResolvedResponse.length ) ], socket );
+        sendBotMsg( ':You can ask me for this "story exercise" again, if you want to.', socket );
+    }, breatheEventDelay + (i * 3000) + breatheEventDelay +  3500) );
+}
 module.exports = socketEvents;
