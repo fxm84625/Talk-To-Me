@@ -1,272 +1,201 @@
-//keyboard/vocal button
-
-$('document').ready(function() {
-    window.hyesoo = {x:window.pJSDom[0].pJS.canvas.w / 2, y:window.pJSDom[0].pJS.canvas.h / 2, sx:10, sy:10}
-
-    $('#mode').click( function() {
-        var $div = $('#main-container');
-        const api = pJSDom[0].pJS.fn.modes
-        $('#main-container').not($div).hide();
-
-        if($(this).find('span').hasClass('fa fa-microphone icon')){
-          window.hyesoo.x = window.pJSDom[0].pJS.canvas.w / 2;
-          window.hyesoo.y = window.pJSDom[0].pJS.canvas.h/2;
-          $(this).find('span').removeClass('fa fa-microphone icon');
-          $(this).find('span').addClass('fa fa-keyboard-o icon');
-          api.pushParticles(100);
-          $div.animate({left: ["-=1000px", "swing"], opacity: ["toggle", "swing"]}, 500);
-        } else if($(this).find('span').hasClass('fa fa-keyboard-o icon')){
-          window.hyesoo.x = window.pJSDom[0].pJS.canvas.w/7*5.5;
-          window.hyesoo.y = window.pJSDom[0].pJS.canvas.h/11*4.5;
-          $(this).find('span').removeClass('fa fa-keyboard-o icon');
-          $(this).find('span').addClass('fa fa-microphone icon');
-          api.removeParticles(100);
-          $div.animate({left: ["18%", "swing"], opacity: ["toggle", "swing"]}, 500);
-      };
-    });
-
-    //volume
-      $('#vol').click( function() {
-        if ($(this).find('span').hasClass('glyphicon glyphicon-volume-up icon')){
-          $(this).find('span').removeClass('glyphicon glyphicon-volume-up icon');
-          $(this).find('span').addClass('glyphicon glyphicon-volume-off icon');
-        } else if ($(this).find('span').hasClass('glyphicon glyphicon-volume-off icon')){
-          $(this).find('span').removeClass('glyphicon glyphicon-volume-off icon');
-          $(this).find('span').addClass('glyphicon glyphicon-volume-up icon');
-        }
-      });
-});
-
-//visuals
-
+// Particle effects for Empathy bot's visual
 particlesJS('particles-js', {
-      "particles": {
+    "particles": {
         "number": {
-          "value": 1000,
-          "density": {
-            "enable": false,
-            "value_area": 481.0236182596568
-          }
+            "value": 1000,
+            "density": {
+                "enable": false,
+                "value_area": 481.0236182596568
+            }
         },
         "color": {
-          "value": "#CCC"
+            "value": "#CCC"
         },
         "shape": {
-          "type": "polygon",
-          "stroke": {
-            "width": 0,
-            "color": "#000000"
-          }
+            "type": "polygon",
+            "stroke": {
+                "width": 0,
+                "color": "#000000"
+            }
         },
         "polygon": {
-          "nb_sides": 4
+            "nb_sides": 4
         },
         "size": {
-          "value": 0,
-          "random": false,
-          "anim": {
-            "enable": false,
-            "speed": 10,
-            "size_min": 0.1,
-            "sync": false
-          }
+            "value": 0,
+            "random": false,
+            "anim": {
+                "enable": false,
+                "speed": 10,
+                "size_min": 0.1,
+                "sync": false
+            }
         },
         "line_linked": {
-          "enable": true,
-          "distance": 20.10236182596568,
-          "color": "#ffffff",
-          "opacity": .7,
-          "width": 1
+            "enable": true,
+            "distance": 20.10236182596568,
+            "color": "#ffffff",
+            "opacity": .7,
+            "width": 1
         },
         "move": {
-          "enable": true,
-          "speed": 2,
-          "direction": "none",
-          "random": false,
-          "straight": false,
-          "out_mode": "out",
-          "bounce": false,
-          "attract": {
-            "enable": false,
-            "rotateX": 600,
-            "rotateY": 1200
-          }
+            "enable": true,
+            "speed": 2,
+            "direction": "none",
+            "random": false,
+            "straight": false,
+            "out_mode": "out",
+            "bounce": false,
+            "attract": {
+                "enable": false,
+                "rotateX": 600,
+                "rotateY": 1200
+            }
         }
-      },
-      "interactivity": {
+    },
+    "interactivity": {
         "detect_on": "canvas",
         "events": {
-          "onhover": {
+        "onhover": {
             "enable": true,
             "mode": "repulse"
-          },
-          "onclick": {
+        },
+        "onclick": {
             "enable": true,
             "mode": "push"
-          },
-          "resize": true
+        },
+        "resize": true
         },
         "modes": {
-          "grab": {
-            "distance": 400,
-            "line_linked": {
-              "opacity": 1
+            "grab": {
+                "distance": 400,
+                "line_linked": {
+                    "opacity": 1
+                }
+            },
+            "bubble": {
+                "distance": 400,
+                "size": 40,
+                "duration": 2,
+                "opacity": 8,
+                "speed": 3
+            },
+            "repulse": {
+                "distance": 30,
+                "duration": 0.4
+            },
+            "push": {
+                "particles_nb": 1
+            },
+            "remove": {
+                "particles_nb": 6
             }
-          },
-          "bubble": {
-            "distance": 400,
-            "size": 40,
-            "duration": 2,
-            "opacity": 8,
-            "speed": 3
-          },
-          "repulse": {
-            "distance": 30,
-            "duration": 0.4
-          },
-          "push": {
-            "particles_nb": 1
-          },
-          "remove": {
-            "particles_nb": 6
-          }
         }
-      },
-      "retina_detect": true
-    })
+    },
+    "retina_detect": true
+});
+
+$( 'document' ).ready( function() {
+    // Client side Socket connection
+    // Server side Socket event handlers are in /server/socket.js
+    var url = $( location ).attr( 'host' );
+    var socket = io.connect( url );
+
+    var particleConfig = {
+        x: window.pJSDom[0].pJS.canvas.w / 2,
+        y: window.pJSDom[0].pJS.canvas.h / 2,
+        sx:10,
+        sy:10
+    };
+
     const api = pJSDom[0].pJS.fn.modes
 
     var videoInput = document.getElementById('video');
     var ctracker = new clm.tracker();
 
     ctracker.init();
-    ctracker.start(videoInput);
+    ctracker.start( videoInput );
 
     function gumSuccess( stream ) {
-      if ("srcObject" in videoInput) {
-        videoInput.srcObject = stream;
-      } else {
-        videoInput.src = (window.URL && window.URL.createObjectURL(stream));
-      }
+        if ("srcObject" in videoInput) {
+            videoInput.srcObject = stream;
+        }
+        else {
+            videoInput.src = (window.URL && window.URL.createObjectURL(stream));
+        }
 
-      videoInput.onloadedmetadata = function() {
-        videoInput.play();
-        setTimeout(positionLoop, 1000)
-      }
+        videoInput.onloadedmetadata = function() {
+            videoInput.play();
+            setTimeout(positionLoop, 1000)
+        }
     }
 
     function gumFail () {
 
     }
 
-    if (navigator.mediaDevices) {
-      navigator.mediaDevices.getUserMedia({video : true}).then(gumSuccess).catch(gumFail);
-    } else if (navigator.getUserMedia) {
-      navigator.getUserMedia({video : true}, gumSuccess, gumFail);
-    } else {
-      alert("Your browser does not seem to support getUserMedia, using a fallback video instead.");
+    if( navigator.mediaDevices )        navigator.mediaDevices.getUserMedia({ video : true }).then( gumSuccess ).catch( gumFail );
+    else if( navigator.getUserMedia )   navigator.getUserMedia({ video : true }, gumSuccess, gumFail );
+    else                                console.log("Your browser does not seem to support getUserMedia, using a fallback video instead.");
+
+    function scale( positions, ix, scaleAmt ) {
+        const cx = particleConfig.x;
+        const cy = particleConfig.y;
+
+        const w = ( positions[13][0] - positions[1][0] ) / 2
+        const h = ( positions[13][1] - positions[1][1] ) / 2
+
+        const xs = particleConfig.sx;
+        const xy = particleConfig.sy;
+        // const xs = 10//cx / w
+        // const xy = 10//cy / h
+
+        const x = ( ( positions[ix][0] - positions[62][0] ) * xs ) + cx
+        const y = ( ( positions[ix][1] - positions[62][1] ) * xy ) + cy
+
+        return { x, y };
     }
 
+    function positionLoop() {
+        //requestAnimFrame(positionLoop);
+        var positions = ctracker.getCurrentPosition();
+        // do something with the positions ...
+        // print the positions
+        var positionString = "";
+        //console.log(positions)
 
-    function scale(positions, ix, scale) {
-
-          const cx = window.hyesoo.x;
-          const cy = window.hyesoo.y;
-
-          const w = (positions[13][0] - positions[1][0]) / 2
-          const h = (positions[13][1] - positions[1][1]) / 2
-
-          const xs = window.hyesoo.sx;
-          const xy = window.hyesoo.sy;
-          // const xs = 10//cx / w
-          // const xy = 10//cy / h
-
-          const x = ((positions[ix][0] - positions[62][0]) * xs) + cx
-          const y = ((positions[ix][1] - positions[62][1]) * xy) + cy
-
-          return {x, y}
+        if( positions ) {
+            const pJS = pJSDom[0].pJS
+            pJS.particles.array.splice(pJS.particles.array.length - positions.length, positions.length);
+            for (var p = 0;p < positions.length;p++) {
+                let pt = scale( positions, p, 10 );
+                api.pushParticles(1, {pos_x: pt.x, pos_y: pt.y})
+                // console.log(pt);
+            }
         }
-
-      function positionLoop() {
-
-      //requestAnimFrame(positionLoop);
-      var positions = ctracker.getCurrentPosition();
-      // do something with the positions ...
-      // print the positions
-      var positionString = "";
-      //console.log(positions)
-
-      if (positions) {
-        const pJS = pJSDom[0].pJS
-        pJS.particles.array.splice(pJS.particles.array.length - positions.length, positions.length);
-        for (var p = 0;p < positions.length;p++) {
-          let pt = scale(positions, p, 10);
-          api.pushParticles(1, {pos_x: pt.x, pos_y: pt.y})
-          // console.log(pt);
-        }
-      }
     }
 
-    setInterval(positionLoop, 100)
+    setInterval( positionLoop, 100 );
 
-    //setInterval(() => api.removeParticles(40 * (1500/200)), 1500)
-    //setInterval(() => api.removeParticles(380), 3000)
-    //positionLoop();
-
-    // var old;
-    // function positionLoop() {
-    //   // requestAnimFrame(positionLoop);
-    //   var positions = ctracker.getCurrentPosition();
-    //   // if(!old) old = positions;
-		// 	// var delta = positions.map((item,ix) => [item[0]-old[ix][0], item[1]-old[ix][1]]);
-    //   // print the positions
-    //   // old = positions;
-    //   var positionString = "";
-    //   if (positions) {
-    //     for (var p = 0;p < 10;p++) {
-    //
-    //       // api.repulseParticle(pos_x: (delta[p][0]), pos_y: (delta[p][1]));
-    //       //console.log(p, positions[p][0], positions[p][1])
-    //       //positionString += "featurepoint "+p+" : ["+positions[p][0].toFixed(2)+","+positions[p][1].toFixed(2)+"]<br/>";
-    //     }
-    //     // api.pushParticles(3, {pos_x: positions[0][0], pos_y: positions[0][1]})
-    //     // api.removeParticles(2)
-    //     // console.log(positionString);
-    //     // api.repulseParticle({x: positions[p][0], y: positions[p][1]});
-    //     // console.log(delta[0][0], delta[0][1]);
-    //   }
-    // }
-    //
-    // setInterval(positionLoop, 1000);
-    // // positionLoop();
-
-
-//modal
+    // Modal
     var modal = document.getElementById('myModal');
     var btn = document.getElementById("info");
 
     var span = document.getElementsByClassName("close")[0];
 
     btn.onclick = function() {
-      modal.style.display = "block";
+        modal.style.display = "block";
     }
 
     span.onclick = function() {
-      modal.style.display = "none";
+        modal.style.display = "none";
     }
 
     window.onclick = function(event) {
-      if (event.target == modal) {
-          modal.style.display = "none";
-      }
+        if( event.target === modal ) {
+            modal.style.display = "none";
+        }
     }
-
-//index
-$( document ).ready( function() {
-    // Client side Socket connection
-    // Server side Socket event handlers are in /server/socket.js
-    var url = $( location ).attr( 'host' );
-    var socket = io.connect( url );
 
     // Focus on the input element, where user's type their messages
     $( "#msg-field" ).focus();
@@ -274,17 +203,9 @@ $( document ).ready( function() {
     $( '#msg-container' ).scrollTop( $( '#msg-container' )[0].scrollHeight );
 
     // Variables for the Empathy bot's voice ( text to speech ) and visual
-    var voiceToggle = false;
-    var visualToggle = false;
-
-    // Handle toggling Empathy bot voice and visual
-    $( '#voice-toggle' ).on( 'change', function() {
-        voiceToggle = $( this ).prop( 'checked' );
-        if( !voiceToggle ) window.speechSynthesis.cancel();
-    });
-    $( '#visual-toggle' ).on( 'change', function() {
-        visualToggle = $( this ).prop( 'checked' );
-    });
+    var voiceToggle = true;     // Empathy bot's voice
+    var chatMicToggle = true;   // User's Chat and Microphone toggle    // true = Microphone    // false = Chat box
+    var CHAT = false, MIC = true;
 
     // Functions for reading a User's speech
         // onAnythingSaid runs every time the User says something
@@ -302,6 +223,51 @@ $( document ).ready( function() {
     // Start event listener for Speech Recognition
     var listener = new SpeechToText( onAnythingSaid, onFinalised, onFinishedListening );
     listener.startListening();
+
+    // User Chat / Microphone toggle button event handler
+    $( '#mode-button' ).click( function() {
+        var main = $('#main-container');
+        const api = pJSDom[0].pJS.fn.modes
+        $('#main-container').not( main ).hide();
+
+        // Toogle to User Microphone, disable Chat box
+        if( $(this).find('span').hasClass('fa-microphone') ){
+            particleConfig.x = window.pJSDom[0].pJS.canvas.w / 2;
+            particleConfig.y = window.pJSDom[0].pJS.canvas.h/2;
+            $(this).find('span').removeClass( 'fa-microphone' );
+            $(this).find('span').addClass( 'fa-keyboard-o' );
+            main.animate({ left: ["-100%", "swing"] }, 500 );
+            listener.startListening();
+            chatMicToggle = MIC;
+        }
+        // Toggle to Chat box, disable User Microphone
+        else if( $(this).find('span').hasClass('fa-keyboard-o') ){
+            particleConfig.x = window.pJSDom[0].pJS.canvas.w/7*5.5;
+            particleConfig.y = window.pJSDom[0].pJS.canvas.h/11*4.5;
+            $(this).find('span').removeClass( 'fa-keyboard-o' );
+            $(this).find('span').addClass( 'fa-microphone' );
+            main.animate({ left: ["18%", "swing"] }, 500 );
+            listener.stopListening();
+            chatMicToggle = CHAT;
+        };
+    });
+
+    // Volume button click event handler
+    $( '#volume-button' ).click( function() {
+        // Toggle Empathy bot's voice: OFF
+        if( $(this).find('span').hasClass( 'glyphicon-volume-up' ) ) {
+            $(this).find('span').removeClass( 'glyphicon-volume-up' );
+            $(this).find('span').addClass( 'glyphicon-volume-off' );
+            voiceToggle = false;
+            window.speechSynthesis.cancel();
+        }
+        // Toggle Empathy bot's voice: ON
+        else if( $(this).find('span').hasClass( 'glyphicon-volume-off' ) ) {
+            $(this).find('span').removeClass( 'glyphicon-volume-off' );
+            $(this).find('span').addClass( 'glyphicon-volume-up' );
+            voiceToggle = true;
+        }
+    });
 
     // Event: User is typing a message - mark the User as currently active, so the Empathy bot does not interrupt them
     $( '#msg-field' ).on( 'keydown', function() {
