@@ -61,43 +61,20 @@ var storyKeyWords = [
     'stories?','stories!','stories,', 'storytelling,','storytelling?',
     'storytime','storytime!','storytime?','storytime,',
 ]
-/** Save key words for each User, such as names and locations
-    {
-        socketId: {
-            "given-name": [ "James", "Harry", "Robert" ],
-            "geo-city": [ "Atlanta", "Ohio" ]
-        }
-    }
-*/
+
 var shortStoryArray =  [
     'Let\'s read a story then!',
     'Let\'s just take a moment to read a story',
     'We should take time to read a story',
     'I have a story that can help you relax!',
 ]
+
+/** Save key words for each User, such as names and locations
+*/
 var context = {};
 
 // Function to generate a response for the Empathy bot to sent back to the User
 /** dialogFlowResult is the result of the user's sentences being set to the dialogFlow API
-    {
-        source: 'agent',
-        resolvedQuery: 'hi.',
-        action: 'input.welcome',
-        actionIncomplete: false,
-        parameters: {},
-        contexts: [],
-        metadata: {
-            intentId: 'e59f99ba-9c9e-455f-a540-0e9df7dd4db1',
-            webhookUsed: 'false',
-            webhookForSlotFillingUsed: 'false',
-            intentName: 'Default Welcome Intent'
-        },
-        fulfillment: {
-            speech: 'Good day!',
-            messages: [Array]
-        },
-        score: 1
-    }
 /** userStates is an array that has emotional state data, in the form of numerical values
     userStates: [ totalScore, totalComparativeScore ]
         totalScore: total calculated score from User's words ( each word is scored from -4 to +4 )

@@ -291,7 +291,6 @@ function startStoryEvent( socket ) {
     console.log(story[0])
     console.log(story[1])
     var totalLength = 0;
-        //Math.floor( Math.random() * (shortStoryArray.length - 1) )
     for (var i = 0; i < story.length; i++) {
         (function(ind) {
             botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( story[ind], socket ); }, breatheEventDelay + (ind * 3000) + 1500 ));

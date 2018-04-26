@@ -1,7 +1,7 @@
 
 <h1 align="center">
   <br>
-  <a href="https://github.com/fxm84625/Talk-To-Me"><img src="/docs/images/Logo224.png" alt="TalkToMe"></a>
+  <a href="https://github.com/fxm84625/Talk-To-Me"><img src="./docs/images/Logo224.png" alt="TalkToMe"></a>
   <br>
   Talk To Me
   <br>
