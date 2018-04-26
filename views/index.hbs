@@ -1,15 +1,18 @@
 <div id="main-container">
-    <div class="chat">
+  <div class="mask">
+  </div>
+      <div class="pin-bottom">
         <div id="msg-container" class="panel-body">
-            <div class="bot-msg">Hi! I'm an Empathy bot that you can vent to.</div>
-            <div class="bot-msg">I may get some things wrong, but I will still be listening.</div>
-            <div class="bot-msg">You can enable my Voice, or my Visual!</div>
+            <div class="bot-msg">Hi! I'm here for you to vent.</div>
+            <div class="bot-msg">You can tell me anything!</div>
+            <div class="bot-msg">I may get some things wrong, but I will always be listening.</div>
+            <div class="bot-msg">You can switch to the talking mode, or just enable my Voice!</div>
         {{#if msgArray}}
         {{#each msgArray}}
             {{#if msgArray.bot}}
             <div class="bot-msg">{{this.text}}</div>
             {{else}}
-            <div class="user-msg">{{this.text}}</div>
+            <div class="user-msg"><p class="right">{{this.text}}</p></div>
             {{/if}}
         {{/each}}
         {{/if}}
@@ -22,18 +25,20 @@
                 </span>
             </form>
         </div>
-    </div>
+      </div>
 </div>
 
 <!-- buttons -->
 <div class="options">
-  <span class="fa fa-microphone icon" id="voice-toggle"></span>
-  <span class="glyphicon glyphicon-volume-up icon" id="volume-toggle"></span>
+    <button id="mode"><span class="fa fa-microphone icon" id="voice-toggle"></span></button>
+    <button id="vol"><span class="glyphicon glyphicon-volume-up icon" id="volume-toggle"></span></button>
 </div>
 
 <!-- visuals -->
-<video style="display: none" id="video" width="100" height="100" preload="auto" playsinline autoplay></video>
-
+<div id="visuals">
+  <video style="display: none" id="video" width="100" height="100" preload="auto" playsinline autoplay></video>
+  <div id="particles-js"/>
+<div>
 <!-- info -->
 <a class="text" id="info">
 <i>Talk To Me</i>
