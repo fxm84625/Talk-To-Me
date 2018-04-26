@@ -269,6 +269,7 @@ function startBreatheEvent( socket ) {
     }, breatheEventDelay + 45500 ) );
 }
 // Story Exercise
+// Story Arrays for storage
 var shortStoryArray = [
     ['A Few Words on a Page by Bob the Cyclops', 'It\'s a powerful thing to write',
     'To say what it mean','and write what you want',
@@ -288,14 +289,9 @@ function startStoryEvent( socket ) {
     }, breatheEventDelay ) );
     //Story Telling Loop
     var story = shortStoryArray[0]
-    console.log(story[0])
-    console.log(story[1])
-    var totalLength = 0;
     for (var i = 0; i < story.length; i++) {
         (function(ind) {
             botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( story[ind], socket ); }, breatheEventDelay + (ind * 3000) + 1500 ));
-        })(i);
-        totalLength +=story[i].length
     }
     //End Story Cycle
     botMsgTimer[ socket.id ].push( setTimeout( function() {
