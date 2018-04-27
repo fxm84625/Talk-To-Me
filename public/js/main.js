@@ -160,18 +160,34 @@ $( 'document' ).ready( function() {
         var positionString = "";
         //console.log(positions)
 
-        if( positions ) {
+        if( positions && isRunning ) {
             const pJS = pJSDom[0].pJS
-            pJS.particles.array.splice(pJS.particles.array.length - positions.length, positions.length);
+            pJS.particles.array.splice((pJS.particles.array.length) - positions.length, positions.length);
+            pJS.particles.array.splice((pJS.particles.array.length) - positions.length, positions.length);
+            pJS.particles.array.splice((pJS.particles.array.length) - positions.length, positions.length);
+            pJS.particles.array.splice((pJS.particles.array.length) - positions.length, positions.length);
+            pJS.particles.array.splice((pJS.particles.array.length) - positions.length, positions.length);
+            pJS.particles.array.splice((pJS.particles.array.length) - positions.length, positions.length);
+            pJS.particles.array.splice((pJS.particles.array.length) - positions.length, positions.length);
+            pJS.particles.array.splice((pJS.particles.array.length) - positions.length, positions.length);
+
             for (var p = 0;p < positions.length;p++) {
-                let pt = scale( positions, p, 10 );
-                api.pushParticles(1, {pos_x: pt.x, pos_y: pt.y})
+                let pt = scale( positions, p, 8 );
+                api.pushParticles(8, {pos_x: pt.x, pos_y: pt.y})
                 // console.log(pt);
             }
         }
     }
 
+    var isRunning = true;
+
+    function halt(){
+      isRunning = !isRunning;
+
+    }
+
     setInterval( positionLoop, 100 );
+    setInterval(halt, 2000)
     // setInterval(api.removeParicles(200), 100);
 
     // Modal
