@@ -6,14 +6,14 @@ body {
     height: 100%;
     width: 100%;
     overflow: hidden;
-    background-color: black;
+    background-color: Black;
 }
 
 #main-container {
     width: 35%;
     height: 73%;
     position: fixed;
-    border: solid 30px black;
+    border: solid 30px rgba(0,0,0,.5);
     left: -100%;
     top: 15%;
     z-index: 800;
@@ -33,11 +33,6 @@ body {
 #msg-container {
     overflow-y: auto;
     background-color: black;
-    /* vertical-align:bottom; */
-}
-
-#voice-toggle, #visual-toggle {
-
 }
 
 .user-msg, .bot-msg, .bot-sub-msg {
@@ -100,6 +95,10 @@ input{
     width: 90%;
 }
 
+.msg-submit{
+  margin-bottom: 0 !important;
+}
+
 textarea, input, button { outline: none; }
 
 .typing{
@@ -143,6 +142,7 @@ button {
 
 .options{
   width: 45px;
+  height: 90%;
   position: fixed;
   left: 5%;
   top: 10%;
@@ -152,12 +152,13 @@ button {
 #mode, #vol{
   width: 45px !important;
   height: 45px !important;
-  margin-bottom: 25% !important;
+
 }
 
 .icon{
   color: white;
   font-size:30px;
+  padding-bottom: 30% !important;
 }
 
 .text{
@@ -215,11 +216,11 @@ button {
 
 /* The Close Button */
 .close {
-    color: #aaa;
+    color: #999;
     float: right;
     padding: 5%;
     font-size: 28px;
-    font-weight: 200;
+    font-weight: 400;
 }
 
 .close:hover,
@@ -228,3 +229,56 @@ button {
     text-decoration: none;
     cursor: pointer;
 }
+
+
+/* .monotone{
+  position: fixed;
+  bottom: 5%;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #999;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: black;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px black;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+} */

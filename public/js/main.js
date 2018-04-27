@@ -2,7 +2,7 @@
 particlesJS('particles-js', {
     "particles": {
         "number": {
-            "value": 1000,
+            "value": 3500,
             "density": {
                 "enable": false,
                 "value_area": 481.0236182596568
@@ -12,37 +12,35 @@ particlesJS('particles-js', {
             "value": "#CCC"
         },
         "shape": {
-            "type": "polygon",
+            "type": "circle",
             "stroke": {
                 "width": 0,
                 "color": "#000000"
             }
         },
-        "polygon": {
-            "nb_sides": 4
-        },
         "size": {
-            "value": 0,
+            "value": 0.2,
             "random": false,
             "anim": {
                 "enable": false,
-                "speed": 10,
+                "speed": 40,
                 "size_min": 0.1,
                 "sync": false
             }
         },
         "line_linked": {
             "enable": true,
+            // "distance": 50,
             "distance": 20.10236182596568,
             "color": "#ffffff",
             "opacity": .7,
-            "width": 1
+            "width": 2
         },
         "move": {
             "enable": true,
-            "speed": 2,
+            "speed": 10,
             "direction": "none",
-            "random": false,
+            "random": true,
             "straight": false,
             "out_mode": "out",
             "bounce": false,
@@ -81,7 +79,7 @@ particlesJS('particles-js', {
                 "speed": 3
             },
             "repulse": {
-                "distance": 30,
+                "distance": 60,
                 "duration": 0.4
             },
             "push": {
@@ -104,8 +102,8 @@ $( 'document' ).ready( function() {
     var particleConfig = {
         x: window.pJSDom[0].pJS.canvas.w / 2,
         y: window.pJSDom[0].pJS.canvas.h / 2,
-        sx:10,
-        sy:10
+        sx:20,
+        sy:20
     };
 
     const api = pJSDom[0].pJS.fn.modes
@@ -137,7 +135,6 @@ $( 'document' ).ready( function() {
     if( navigator.mediaDevices )        navigator.mediaDevices.getUserMedia({ video : true }).then( gumSuccess ).catch( gumFail );
     else if( navigator.getUserMedia )   navigator.getUserMedia({ video : true }, gumSuccess, gumFail );
     else                                console.log("Your browser does not seem to support getUserMedia, using a fallback video instead.");
-
     function scale( positions, ix, scaleAmt ) {
         const cx = particleConfig.x;
         const cy = particleConfig.y;
@@ -152,7 +149,6 @@ $( 'document' ).ready( function() {
 
         const x = ( ( positions[ix][0] - positions[62][0] ) * xs ) + cx
         const y = ( ( positions[ix][1] - positions[62][1] ) * xy ) + cy
-
         return { x, y };
     }
 
@@ -176,6 +172,7 @@ $( 'document' ).ready( function() {
     }
 
     setInterval( positionLoop, 100 );
+    // setInterval(api.removeParicles(200), 100);
 
     // Modal
     var modal = document.getElementById('myModal');
@@ -234,6 +231,10 @@ $( 'document' ).ready( function() {
         if( $(this).find('span').hasClass('fa-microphone') ){
             particleConfig.x = window.pJSDom[0].pJS.canvas.w / 2;
             particleConfig.y = window.pJSDom[0].pJS.canvas.h/2;
+
+            particleConfig.sx = 20;
+            particleConfig.sy = 20;
+
             $(this).find('span').removeClass( 'fa-microphone' );
             $(this).find('span').addClass( 'fa-keyboard-o' );
             main.animate({ left: ["-100%", "swing"] }, 500 );
@@ -244,6 +245,10 @@ $( 'document' ).ready( function() {
         else if( $(this).find('span').hasClass('fa-keyboard-o') ){
             particleConfig.x = window.pJSDom[0].pJS.canvas.w/7*5.5;
             particleConfig.y = window.pJSDom[0].pJS.canvas.h/11*4.5;
+
+            particleConfig.sx = 12;
+            particleConfig.sy = 12;
+
             $(this).find('span').removeClass( 'fa-keyboard-o' );
             $(this).find('span').addClass( 'fa-microphone' );
             main.animate({ left: ["18%", "swing"] }, 500 );
