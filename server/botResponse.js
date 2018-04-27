@@ -56,10 +56,9 @@ var eventKeyWords = [
     'event',    'event.',    'event,',    'event?',    'event?.'
 ];
 var storyKeyWords = [
-    'story', 'story,','story.','story?','storytelling', 'stories',
-    'stories?','stories!','stories,', 'storytelling,','storytelling?',
-    'storytime','storytime!','storytime?','storytime,',
-]
+    'story',   'story,',   'story.',   'story?',   'story?.',
+    'stories', 'stories,', 'stories.', 'stories?', 'stories?.'
+];
 /** Save key words for each User, such as names and locations
     {
         socketId: {
@@ -71,10 +70,9 @@ var storyKeyWords = [
 var shortStoryArray =  [
     'Let\'s read a story then!',
     'Let\'s just take a moment to read a story',
-    'We should take time to read a story',
-    'I have a story that can help you relax!',
-]
-var context = {};
+    'I have a calming story for you!',
+];
+// var context = {};
 
 // Function to generate a response for the Empathy bot to sent back to the User
 /** dialogFlowResult is the result of the user's sentences being set to the dialogFlow API
@@ -109,7 +107,6 @@ function botResponse( socketId, dialogFlowResult, userStates, prevUserStates ) {
     // Event when the User asks for the breathing exercise
     // Event when the User asks for the story exercise
     var userTextSplit = dialogFlowResult.resolvedQuery.split(' ');
-    console.log(userTextSplit)
     for( var i = 0; i < userTextSplit.length; i++ ) {
         if( breatheKeyWords.includes( userTextSplit[i] ) ) {
             if( dialogFlowResult.action === "smalltalk.agent.can_you_help" || eventKeyWords.includes( userTextSplit[i+1] ) ) {
@@ -127,35 +124,38 @@ function botResponse( socketId, dialogFlowResult, userStates, prevUserStates ) {
     if( dialogFlowResult.action.split('.')[0] === 'smalltalk' ) return dialogFlowResult.fulfillment.speech;
 
     // Save sentence context parameters, like places, people, and locations
-    if( !context[ socketId ] ) context[ socketId ] = {};
-    var existingContexts = {};
-    var newContexts = {};
-    for( var key in dialogFlowResult.parameters ) {
-        if( !context[ socketId ][ key ] ) {
-            context[ socketId ][ key ] = dialogFlowResult.parameters[ key ];
-            newContexts[ key ] = dialogFlowResult.parameters[ key ];
-        }
-        else {
-            for( var i = 0; i < dialogFlowResult.parameters[ key ].length; i++ ) {
-                if( context[ socketId ][ key ].includes( dialogFlowResult.parameters[ key ][i] ) ) {
-                    if( !existingContexts[ key ] ) existingContexts[ key ] = [];
-                    existingContexts[ key ].push( dialogFlowResult.parameters[ key ][i] );
-                }
-                else {
-                    if( !newContexts[ key ] ) newContexts[ key ] = [];
-                    newContexts[ key ].push( dialogFlowResult.parameters[ key ][i] );
-                }
-            }
-        }
-    }
+    // if( !context[ socketId ] ) context[ socketId ] = {};
+    // var existingContexts = {};
+    // var newContexts = {};
+    // for( var key in dialogFlowResult.parameters ) {
+        // if( !context[ socketId ][ key ] ) {
+            // context[ socketId ][ key ] = dialogFlowResult.parameters[ key ];
+            // newContexts[ key ] = dialogFlowResult.parameters[ key ];
+        // }
+        // else {
+            // for( var i = 0; i < dialogFlowResult.parameters[ key ].length; i++ ) {
+                // if( context[ socketId ][ key ].includes( dialogFlowResult.parameters[ key ][i] ) ) {
+                    // if( !existingContexts[ key ] ) existingContexts[ key ] = [];
+                    // existingContexts[ key ].push( dialogFlowResult.parameters[ key ][i] );
+                // }
+                // else {
+                    // if( !newContexts[ key ] ) newContexts[ key ] = [];
+                    // newContexts[ key ].push( dialogFlowResult.parameters[ key ][i] );
+                // }
+            // }
+        // }
+    // }
 
     // User's sentences are a positive increase from last time
     if( userStates[1] > prevUserStates[1] ) {
         // See if the User mentioned any new people or places
-        for( var key in newContexts ) {
-            if( key === "given-name" )    return namePositiveArray[ Math.floor( Math.random() * namePositiveArray.length ) ] + wordArrayToString( newContexts[ key ] ) + '?';
-            else if( key === "geo-city" ) return placePositiveArray[ Math.floor( Math.random() * placePositiveArray.length ) ] + wordArrayToString( newContexts[ key ] ) + '?';
-        }
+        // for( var key in newContexts ) {
+            // if( !newContexts[key].length ) continue;
+            // if( key === "given-name" ) {
+                // return namePositiveArray[ Math.floor( Math.random() * namePositiveArray.length ) ] + wordArrayToString( newContexts[ key ] ) + '?';
+            // }
+            // else if( key === "geo-city" ) return placePositiveArray[ Math.floor( Math.random() * placePositiveArray.length ) ] + wordArrayToString( newContexts[ key ] ) + '?';
+        // }
         return positiveArray[ Math.floor( Math.random() * positiveArray.length ) ];
     }
     // User's sentences are negative or neutral from last time
@@ -163,10 +163,10 @@ function botResponse( socketId, dialogFlowResult, userStates, prevUserStates ) {
         if( userStates[0] <= -15 ) return breatheArray[ Math.floor( Math.random() * breatheArray.length ) ];
         if( userStates[0] <= -10 ) return shortStoryArray[ Math.floor( Math.random() * shortStoryArray.length ) ];
         // See if the User mentioned any new people or places
-        for( var key in newContexts ) {
-            if( key === "given-name" ) return nameNegativeArray[ Math.floor( Math.random() * nameNegativeArray.length ) ] + wordArrayToString( newContexts[ key ] ) + '?';
-            else if( key === "geo-city" ) return placeNegativeArray[ Math.floor( Math.random() * placeNegativeArray.length ) ] + wordArrayToString( newContexts[ key ] ) + '?';
-        }
+        // for( var key in newContexts ) {
+            // if( key === "given-name" ) return nameNegativeArray[ Math.floor( Math.random() * nameNegativeArray.length ) ] + wordArrayToString( newContexts[ key ] ) + '?';
+            // else if( key === "geo-city" ) return placeNegativeArray[ Math.floor( Math.random() * placeNegativeArray.length ) ] + wordArrayToString( newContexts[ key ] ) + '?';
+        // }
         return negativeArray[ Math.floor( Math.random() * negativeArray.length ) ];
     }
     return '';

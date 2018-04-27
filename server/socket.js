@@ -168,12 +168,6 @@ function getBotMsgEvent( text ) {
     }
     return '';
 }
-var storyKeyWords = [
-    'story', 'story,','story.','story?','storytelling', 'stories',
-    'stories?','stories!','stories,', 'storytelling,','storytelling?',
-    'storytime','storytime!','storytime?','storytime,',
-]
-
 var breatheKeyWords = [ 'breath',    'breath.',    'breath,',    'breath?',    'breath?.',
                         'breathe',   'breathe.',   'breathe,',   'breathe?',   'breathe?.',
                         'breathing', 'breathing.', 'breathing,', 'breathing?', 'breathing?.' ];
@@ -182,16 +176,21 @@ var breatheResolvedResponse = [
     "How are you feeling now?",
     "I hope you are feeling better."
 ];
+var storyKeyWords = [
+    'story',   'story,',   'story.',   'story?',   'story?.',
+    'stories', 'stories,', 'stories.', 'stories?', 'stories?.'
+];
 
 // Events for the Empathy bot to run
-var breatheEventDelay = 4000;
 function startBreatheEvent( socket ) {
     // Bot messages starting with ":" character are appended to the previous message
     // Bot messages that are equal to ":del" removes the previous message
     // Only messages without a ":" character are spoken through text-to-speech
+    var breatheEventDelay = 3500;
     clearBotTimeouts( socket.id );
     botMsgTimer[ socket.id ].push( setTimeout( function() {
         sendBotMsg( "Ready?", socket );
+        sendBotMsg( '', socket );
         sendBotMsg( ":Feel free to stop at any time. Please do not strain yourself.", socket );
     }, breatheEventDelay ) );
     botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( "Inhale", socket ); }, breatheEventDelay +  1500 ) );
@@ -265,44 +264,39 @@ function startBreatheEvent( socket ) {
     botMsgTimer[ socket.id ].push( setTimeout( function() {
         sendBotMsg( ":del", socket );
         sendBotMsg( breatheResolvedResponse[ Math.floor( Math.random() * breatheResolvedResponse.length ) ], socket );
-        sendBotMsg( ':You can ask me for this "breathing exercise" again, if you want to.', socket );
     }, breatheEventDelay + 45500 ) );
+    botMsgTimer[ socket.id ].push( setTimeout( function() {
+        sendBotMsg( '', socket );
+        sendBotMsg( ':You can ask me for this "breathing exercise" again, if you want to.', socket );
+    }, breatheEventDelay + 47000 ) );
 }
 // Story Exercise
 var shortStoryArray = [
-    ['A Few Words on a Page by Bob the Cyclops', 'It\'s a powerful thing to write',
-    'To say what it mean','and write what you want',
-    'The ability to change letters into words','words into stories',
-    'and stories into adventures','You can change the look the people take on life',
-    'You can change what they read and think','You can show the world who you are',
-    'with just some words on a page',],
-]
+    [
+        'A Few Words on a Page by Bob the Cyclops', 'It\'s a powerful thing to write',
+        'To say what it means', 'and write what you want',
+        'The ability to change letters into words', 'words into stories',
+        'and stories into adventures', 'You can change the look the people take on life',
+        'You can change what they read and think', 'You can show the world who you are',
+        'with just some words on a page.'
+    ],
+];
 function startStoryEvent( socket ) {
 // Bot messages starting with ":" character are appended to the previous message
 // Bot messages that are equal to ":del" removes the previous message
 // Only messages without a ":" character are spoken through text-to-speech
+    var storyEventDelay = 3000;
     clearBotTimeouts( socket.id );
-    botMsgTimer[ socket.id ].push( setTimeout( function() {
-        sendBotMsg( "Ready?", socket );
-        sendBotMsg( ":Feel free to stop at any time. Please do not strain yourself.", socket );
-    }, breatheEventDelay ) );
-    //Story Telling Loop
+    // Story Telling Loop
     var story = shortStoryArray[0]
-    console.log(story[0])
-    console.log(story[1])
-    var totalLength = 0;
-        //Math.floor( Math.random() * (shortStoryArray.length - 1) )
     for (var i = 0; i < story.length; i++) {
-        (function(ind) {
-            botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( story[ind], socket ); }, breatheEventDelay + (ind * 3000) + 1500 ));
-        })(i);
-        totalLength +=story[i].length
+        ( function( ind ) {
+            botMsgTimer[ socket.id ].push( setTimeout( function() { sendBotMsg( story[ind], socket ); }, storyEventDelay + ( ind * 3000 ) ));
+        })( i );
     }
-    //End Story Cycle
+    // End Story Cycle
     botMsgTimer[ socket.id ].push( setTimeout( function() {
-        sendBotMsg( ":del", socket );
-        sendBotMsg( breatheResolvedResponse[ Math.floor( Math.random() * breatheResolvedResponse.length ) ], socket );
-        sendBotMsg( ':You can ask me for this "story exercise" again, if you want to.', socket );
-    }, breatheEventDelay + (i * 3000) + breatheEventDelay +  3500) );
+        sendBotMsg( "I hope you liked that story.", socket );
+    }, storyEventDelay + ( i * 3000 ) ) );
 }
 module.exports = socketEvents;
