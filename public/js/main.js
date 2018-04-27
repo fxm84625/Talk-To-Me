@@ -135,7 +135,6 @@ $( 'document' ).ready( function() {
     if( navigator.mediaDevices )        navigator.mediaDevices.getUserMedia({ video : true }).then( gumSuccess ).catch( gumFail );
     else if( navigator.getUserMedia )   navigator.getUserMedia({ video : true }, gumSuccess, gumFail );
     else                                console.log("Your browser does not seem to support getUserMedia, using a fallback video instead.");
-
     function scale( positions, ix, scaleAmt ) {
         const cx = particleConfig.x;
         const cy = particleConfig.y;
@@ -150,7 +149,6 @@ $( 'document' ).ready( function() {
 
         const x = ( ( positions[ix][0] - positions[62][0] ) * xs ) + cx
         const y = ( ( positions[ix][1] - positions[62][1] ) * xy ) + cy
-
         return { x, y };
     }
 
@@ -233,8 +231,10 @@ $( 'document' ).ready( function() {
         if( $(this).find('span').hasClass('fa-microphone') ){
             particleConfig.x = window.pJSDom[0].pJS.canvas.w / 2;
             particleConfig.y = window.pJSDom[0].pJS.canvas.h/2;
+
             particleConfig.sx = 20;
             particleConfig.sy = 20;
+
             $(this).find('span').removeClass( 'fa-microphone' );
             $(this).find('span').addClass( 'fa-keyboard-o' );
             main.animate({ left: ["-100%", "swing"] }, 500 );
@@ -245,8 +245,10 @@ $( 'document' ).ready( function() {
         else if( $(this).find('span').hasClass('fa-keyboard-o') ){
             particleConfig.x = window.pJSDom[0].pJS.canvas.w/7*5.5;
             particleConfig.y = window.pJSDom[0].pJS.canvas.h/11*4.5;
+
             particleConfig.sx = 12;
             particleConfig.sy = 12;
+
             $(this).find('span').removeClass( 'fa-keyboard-o' );
             $(this).find('span').addClass( 'fa-microphone' );
             main.animate({ left: ["18%", "swing"] }, 500 );
